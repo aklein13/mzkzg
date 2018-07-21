@@ -1,11 +1,26 @@
 import React, {Component} from 'react';
-import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, ActionConst} from 'react-native-router-flux'
+import {
+  Scene,
+  Router,
+  Overlay,
+  Tabs,
+  Modal,
+  Stack,
+  Lightbox,
+} from 'react-native-router-flux'
+import {StyleSheet} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
-// import layouts from './reducers/stops';
 import Stops from './components/stops';
 import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
+import TabIcon from './components/TabIcon';
+
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    backgroundColor: '#eee',
+  },
+});
 
 let rootReducer = combineReducers({
   routes: routerReducer,
@@ -15,12 +30,6 @@ export let store;
 
 store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const RouterWithRedux = connect()(Router);
-const navTitle = "MZKZG";
-
-const defaultTabProps = {
-  title: navTitle,
-  hideNavBar: false,
-};
 
 export class AppRouter extends Component {
 
@@ -29,30 +38,30 @@ export class AppRouter extends Component {
   }
 
   render() {
-
     return (
       <Provider store={store}>
-        <RouterWithRedux>
-          <Scene key="root">
-
-            <Scene
-              key="tabbar"
-              tabs={false}
-              hideNavBar={false}
-              hideBackImage
-            >
-              <Scene key="Stops" component={Stops} {...defaultTabProps} initial/>
-              {/*<Scene key="Favs" component={Favs} {...defaultTabProps}/>*/}
-            </Scene>
-
-            {/*<Scene*/}
-            {/*key="stopDetails"*/}
-            {/*component={stopDetails}*/}
-            {/*title={emptyTitle}*/}
-            {/*hideNavBar={false}*/}
-            {/*/>*/}
-
-          </Scene>
+        <RouterWithRedux sceneStyle={{marginTop: 24}}>
+          <Overlay key="overlay">
+            <Lightbox key="lightbox">
+              <Stack
+                hideNavBar
+                key="root"
+                titleStyle={{alignSelf: 'center'}}
+              >
+                <Tabs
+                  key="tabbar"
+                  swipeEnabled
+                  showLabel={false}
+                  tabBarStyle={styles.tabBarStyle}
+                  activeBackgroundColor="white"
+                  inactiveBackgroundColor="rgba(255, 0, 0, 0.5)"
+                >
+                  <Scene key="favourites" component={Stops} title="Ulubione" hideNavBar icon={TabIcon}/>
+                  <Scene key="stops" component={Stops} title="Przystanki" initial hideNavBar icon={TabIcon}/>
+                </Tabs>
+              </Stack>
+            </Lightbox>
+          </Overlay>
         </RouterWithRedux>
       </Provider>
     );
