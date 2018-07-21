@@ -1,6 +1,6 @@
 import json
 
-with open('stops.json') as f:
+with open('downloaded.json') as f:
     data = json.load(f)
     data = data[list(data.keys())[0]]
     stops = {}
