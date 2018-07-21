@@ -28,6 +28,7 @@ with open('downloaded.json', encoding="utf8") as f:
             stops_new[name].append(value)
         else:
             stops_new[name] = [value]
+    stops_new = {key: stops_new[key] for key in sorted(stops_new)}
     should_save = input('Do you want to save? (y/n)\n') == 'y'
     if should_save:
         with open('stops.json', 'w') as output:
