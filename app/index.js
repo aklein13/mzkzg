@@ -4,7 +4,6 @@ import {
   Router,
   Overlay,
   Tabs,
-  Modal,
   Stack,
   Lightbox,
 } from 'react-native-router-flux'
@@ -12,6 +11,7 @@ import {StyleSheet} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
 import Stops from './components/stops';
+import Stop from './components/stop';
 import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
 import TabIcon from './components/TabIcon';
@@ -59,6 +59,7 @@ export class AppRouter extends Component {
                   <Scene key="favourites" component={Stops} title="Ulubione" hideNavBar icon={TabIcon}/>
                   <Scene key="stops" component={Stops} title="Przystanki" initial hideNavBar icon={TabIcon}/>
                 </Tabs>
+                <Scene key="stop" component={Stop}/>
               </Stack>
             </Lightbox>
           </Overlay>

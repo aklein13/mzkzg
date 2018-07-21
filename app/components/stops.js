@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 const stopList = require('../../stops.json');
 
@@ -20,10 +21,16 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 5,
-  }
+  },
+  input: {
+    height: 50,
+    marginLeft: 10,
+    marginRight: 10,
+    fontSize: 20,
+  },
 });
 
-class Stop extends React.PureComponent {
+class StopItem extends PureComponent {
   handlePress = () => this.props.onItemPress(this.props.name);
 
   render() {
@@ -61,17 +68,18 @@ class Stops extends Component {
 
   onStopPress = (name) => {
     console.log(name);
+    Actions.stop({stopName: name, data: this.state.stops[name]});
   };
 
   renderStop = ({item}) => (
-    <Stop onItemPress={this.onStopPress} name={item}/>
+    <StopItem onItemPress={this.onStopPress} name={item}/>
   );
 
   render() {
     return (
       <View>
         <TextInput
-          style={{height: 50, marginLeft: 10, marginRight: 10, fontSize: 20}}
+          style={styles.input}
           onChangeText={this.handleSearchChange}
           value={this.state.search}
           placeholder={'Wyszukaj'}
