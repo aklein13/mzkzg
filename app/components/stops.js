@@ -68,7 +68,7 @@ class Stops extends Component {
 
   onStopPress = (name) => {
     console.log(name);
-    Actions.stop({stopName: name, data: this.state.stops[name]});
+    Actions.stop({stopName: name, data: stopList[name]});
   };
 
   renderStop = ({item}) => (

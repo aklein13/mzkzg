@@ -15,6 +15,7 @@ import Stop from './components/stop';
 import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
 import TabIcon from './components/TabIcon';
+import {stopReducer} from './reducers/stop';
 
 const styles = StyleSheet.create({
   tabBarStyle: {
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
 
 let rootReducer = combineReducers({
   routes: routerReducer,
+  stopReducer,
 });
 
 export let store;
@@ -54,7 +56,7 @@ export class AppRouter extends Component {
                   showLabel={false}
                   tabBarStyle={styles.tabBarStyle}
                   activeBackgroundColor="white"
-                  inactiveBackgroundColor="rgba(255, 0, 0, 0.5)"
+                  inactiveBackgroundColor="blue"
                 >
                   <Scene key="favourites" component={Stops} title="Ulubione" hideNavBar icon={TabIcon}/>
                   <Scene key="stops" component={Stops} title="Przystanki" initial hideNavBar icon={TabIcon}/>

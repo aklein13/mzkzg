@@ -2,7 +2,7 @@ import json
 
 useful_keys = ['stopId', 'stopDesc', 'stopName', 'stopLat', 'stopLon']
 
-with open('downloaded.json', encoding="utf8") as f:
+with open('./downloaded/stops.json', encoding="utf8") as f:
     data = json.load(f)
     data = data[list(data.keys())[0]]
     stops = {}
@@ -29,6 +29,7 @@ with open('downloaded.json', encoding="utf8") as f:
         else:
             stops_new[name] = [value]
     stops_new = {key: stops_new[key] for key in sorted(stops_new)}
+    print(stops_new)
     should_save = input('Do you want to save? (y/n)\n') == 'y'
     if should_save:
         with open('stops.json', 'w') as output:
