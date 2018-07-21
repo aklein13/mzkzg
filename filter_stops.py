@@ -1,6 +1,6 @@
 import json
 
-useful_keys = ['stopId', 'stopShortName', 'stopDesc', 'stopName', 'stopLat', 'stopLon']
+useful_keys = ['stopId', 'stopDesc', 'stopName', 'stopLat', 'stopLon']
 
 with open('downloaded.json', encoding="utf8") as f:
     data = json.load(f)
@@ -15,10 +15,20 @@ with open('downloaded.json', encoding="utf8") as f:
             if key in useful_keys:
                 if key == 'stopId':
                     key = 'id'
+                elif key == 'stopDesc':
+                    key = 'name'
                 new_stop[key] = value
-        print(new_stop)
+        # print(new_stop)
         stops[stop_id] = new_stop
+    # Iterate for 2nd time just in case I want to switch back to previous structure
+    stops_new = {}
+    for value in stops.values():
+        name = value.get('name')
+        if stops_new.get(name):
+            stops_new[name].append(value)
+        else:
+            stops_new[name] = [value]
     should_save = input('Do you want to save? (y/n)\n') == 'y'
     if should_save:
         with open('stops.json', 'w') as output:
-            json.dump(stops, output)
+            json.dump(stops_new, output)
