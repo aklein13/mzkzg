@@ -58,8 +58,8 @@ export class AppRouter extends Component {
                   activeBackgroundColor="white"
                   inactiveBackgroundColor="blue"
                 >
-                  <Scene key="favourites" component={Stops} title="Ulubione" hideNavBar icon={TabIcon}/>
-                  <Scene key="stops" component={Stops} title="Przystanki" initial hideNavBar icon={TabIcon}/>
+                  <Scene key="favourites" component={Stops} title="Ulubione" initial hideNavBar icon={TabIcon}/>
+                  <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
                 </Tabs>
                 <Scene key="stop" component={Stop}/>
               </Stack>
