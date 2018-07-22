@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
+  AsyncStorage,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {fetchArrivalTimes, clearArrivalTimes} from '../actions/stop';
@@ -31,8 +32,10 @@ const styles = StyleSheet.create({
   closeBtnContainer: {
     paddingTop: 20,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   arrival: {
     width: '100%',
@@ -43,18 +46,53 @@ const styles = StyleSheet.create({
 });
 
 class Stop extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFav: false,
+      favourites: {},
+    };
+  }
+
+  async componentWillMount() {
     console.log(this.props.data);
     this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
+    try {
+      const previousFav = await AsyncStorage.getItem('favourites');
+      console.log('previousFav', previousFav);
+      if (previousFav !== null) {
+        this.setState({favourites: JSON.parse(previousFav)});
+      }
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   componentWillUnmount() {
     this.props.clearArrivalTimes();
   }
 
+  setFav = async () => {
+    console.log('setFav');
+    const {stopName} = this.props;
+    const {favourites} = this.state;
+    const nextFav = {...favourites, [stopName]: !favourites[stopName]};
+    console.log('nextFav', nextFav);
+    try {
+      this.setState({favourites: nextFav});
+      await AsyncStorage.setItem('favourites', JSON.stringify(nextFav));
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   renderClose = () => {
+    const favText = this.state.favourites[this.props.stopName] ? 'Unfav' : 'Fav';
     return (
       <View style={styles.closeBtnContainer}>
+        <TouchableOpacity onPress={this.setFav}>
+          <Text>{favText}</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={Actions.pop}>
           <Text>Zamknij</Text>
         </TouchableOpacity>
@@ -63,8 +101,7 @@ class Stop extends Component {
   };
 
   renderArrival = ({item}) => {
-    console.log('arrival', item);
-    console.log(routeList[item.routeId]);
+    console.log(item);
     let routeName = routeList[item.routeId];
     routeName = routeName ? routeName.name : '';
     return (
