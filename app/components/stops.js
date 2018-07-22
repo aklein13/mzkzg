@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     fontSize: 20,
+    marginTop: -20,
   },
 });
 
@@ -87,6 +88,7 @@ class Stops extends Component {
 
   render() {
     const {isFavScreen} = this.state;
+    const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
       <View>
         {!isFavScreen &&
@@ -102,6 +104,7 @@ class Stops extends Component {
           renderItem={this.renderStop}
           keyExtractor={this.keyExtractor}
         />
+        {ifFavEmpty && <Text style={{textAlign: 'center'}}>Brak ulubionych</Text>}
       </View>
     )
   }

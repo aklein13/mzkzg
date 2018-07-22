@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   inner: {
     alignItems: 'center',
     marginHorizontal: 20,
+    paddingTop: 10,
   },
   closeBtnContainer: {
     paddingTop: 20,
@@ -42,6 +43,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
+  arrivalText: {
+    flex: 1,
+    textAlign: 'center',
+  },
 });
 
 class Stop extends Component {
@@ -53,6 +58,11 @@ class Stop extends Component {
     this.props.clearArrivalTimes();
   }
 
+  refresh = () => {
+    this.props.clearArrivalTimes();
+    this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
+  };
+
   setFav = () => this.props.manageFavourite(this.props.stopName);
 
   renderClose = () => {
@@ -61,6 +71,9 @@ class Stop extends Component {
       <View style={styles.closeBtnContainer}>
         <TouchableOpacity onPress={this.setFav}>
           <Text>{favText}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.refresh}>
+          <Text>Odśwież</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={Actions.pop}>
           <Text>Zamknij</Text>
@@ -74,13 +87,13 @@ class Stop extends Component {
     routeName = routeName ? routeName.name : '';
     return (
       <View style={styles.arrival}>
-        <Text>
+        <Text style={styles.arrivalText}>
           {routeName}
         </Text>
-        <Text>
+        <Text style={styles.arrivalText}>
           {item.headsign}
         </Text>
-        <Text>
+        <Text style={styles.arrivalText}>
           {item.estimatedTime}
         </Text>
       </View>
@@ -91,9 +104,11 @@ class Stop extends Component {
     return (
       <View style={[styles.container, {height, width}]}>
         {this.renderClose()}
-        <View flex={1} style={styles.inner}>
+        <View style={styles.inner}>
           <Text>Przystanek</Text>
-          <Text>{this.props.stopName}</Text>
+          <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+            {this.props.stopName}
+          </Text>
           {this.props.arrivalTimes &&
           <FlatList renderItem={this.renderArrival} data={this.props.arrivalTimes}/>
           }
