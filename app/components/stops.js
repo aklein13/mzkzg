@@ -6,11 +6,12 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  StyleSheet, AsyncStorage,
+  StyleSheet,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {loadFavourites} from '../actions/stop';
 
-const stopList = require('../../stops.json');
+export const stopList = require('../../stops.json');
 
 const styles = StyleSheet.create({
   stop: {
@@ -59,19 +60,7 @@ class Stops extends Component {
 
   async componentWillMount() {
     if (this.props.name === '_favourites') {
-      console.log('if');
-      try {
-        console.log('tu');
-        const previousFav = await AsyncStorage.getItem('favourites');
-        console.log('previousFav', previousFav);
-        if (previousFav !== null) {
-          this.favourites = JSON.parse(previousFav);
-          const favStops = Object.keys(stopList).filter((key) => this.favourites[key]);
-          this.setState({stops: favStops});
-        }
-      } catch (error) {
-        console.warn(error);
-      }
+      this.props.loadFavourites();
       this.setState({isFavScreen: true});
     }
   }
@@ -79,7 +68,7 @@ class Stops extends Component {
   handleSearchChange = (text) => {
     let newStops = Object.keys(stopList);
     if (this.state.isFavScreen) {
-      newStops = newStops.filter((key) => this.favourites[key]);
+      newStops = newStops.filter((key) => this.props.favourites[key]);
     }
     if (text) {
       const searchText = text.toLowerCase();
@@ -90,26 +79,26 @@ class Stops extends Component {
 
   keyExtractor = (item) => item;
 
-  onStopPress = (name) => {
-    console.log(name);
-    Actions.stop({stopName: name, data: stopList[name]});
-  };
+  onStopPress = (name) => Actions.stop({stopName: name, data: stopList[name]});
 
   renderStop = ({item}) => (
     <StopItem onItemPress={this.onStopPress} name={item}/>
   );
 
   render() {
+    const {isFavScreen} = this.state;
     return (
       <View>
+        {!isFavScreen &&
         <TextInput
           style={styles.input}
           onChangeText={this.handleSearchChange}
           value={this.state.search}
           placeholder={'Wyszukaj'}
         />
+        }
         <FlatList
-          data={this.state.stops}
+          data={isFavScreen ? Object.keys(this.props.favourites) : this.state.stops}
           renderItem={this.renderStop}
           keyExtractor={this.keyExtractor}
         />
@@ -120,8 +109,11 @@ class Stops extends Component {
 
 const mapStateToProps = (state) => ({
   first: null,
+  favourites: state.stopReducer.favourites,
 });
 
-const mapDispatch = {};
+const mapDispatch = {
+  loadFavourites,
+};
 
 export default connect(mapStateToProps, mapDispatch)(Stops);

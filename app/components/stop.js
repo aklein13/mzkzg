@@ -7,10 +7,9 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  AsyncStorage,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {fetchArrivalTimes, clearArrivalTimes} from '../actions/stop';
+import {fetchArrivalTimes, clearArrivalTimes, manageFavourite} from '../actions/stop';
 
 const {height, width} = Dimensions.get('window');
 
@@ -46,48 +45,18 @@ const styles = StyleSheet.create({
 });
 
 class Stop extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFav: false,
-      favourites: {},
-    };
-  }
-
-  async componentWillMount() {
-    console.log(this.props.data);
+  componentWillMount() {
     this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
-    try {
-      const previousFav = await AsyncStorage.getItem('favourites');
-      console.log('previousFav', previousFav);
-      if (previousFav !== null) {
-        this.setState({favourites: JSON.parse(previousFav)});
-      }
-    } catch (error) {
-      console.warn(error);
-    }
   }
 
   componentWillUnmount() {
     this.props.clearArrivalTimes();
   }
 
-  setFav = async () => {
-    console.log('setFav');
-    const {stopName} = this.props;
-    const {favourites} = this.state;
-    const nextFav = {...favourites, [stopName]: !favourites[stopName]};
-    console.log('nextFav', nextFav);
-    try {
-      this.setState({favourites: nextFav});
-      await AsyncStorage.setItem('favourites', JSON.stringify(nextFav));
-    } catch (error) {
-      console.warn(error);
-    }
-  };
+  setFav = () => this.props.manageFavourite(this.props.stopName);
 
   renderClose = () => {
-    const favText = this.state.favourites[this.props.stopName] ? 'Unfav' : 'Fav';
+    const favText = this.props.favourites[this.props.stopName] ? 'Unfav' : 'Fav';
     return (
       <View style={styles.closeBtnContainer}>
         <TouchableOpacity onPress={this.setFav}>
@@ -101,7 +70,6 @@ class Stop extends Component {
   };
 
   renderArrival = ({item}) => {
-    console.log(item);
     let routeName = routeList[item.routeId];
     routeName = routeName ? routeName.name : '';
     return (
@@ -120,7 +88,6 @@ class Stop extends Component {
   };
 
   render() {
-    console.log('props', this.props.arrivalTimes);
     return (
       <View style={[styles.container, {height, width}]}>
         {this.renderClose()}
@@ -139,11 +106,13 @@ class Stop extends Component {
 const mapStateToProps = (state) => ({
   first: null,
   arrivalTimes: state.stopReducer.arrivalTimes,
+  favourites: state.stopReducer.favourites,
 });
 
 const mapDispatch = {
   fetchArrivalTimes,
   clearArrivalTimes,
+  manageFavourite,
 };
 
 export default connect(mapStateToProps, mapDispatch)(Stop);
