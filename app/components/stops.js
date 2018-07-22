@@ -6,7 +6,7 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  StyleSheet, AsyncStorage,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
@@ -52,11 +52,35 @@ class Stops extends Component {
     this.state = {
       search: '',
       stops: Object.keys(stopList),
+      isFavScreen: false,
     };
+    this.favourites = {};
+  }
+
+  async componentWillMount() {
+    if (this.props.name === '_favourites') {
+      console.log('if');
+      try {
+        console.log('tu');
+        const previousFav = await AsyncStorage.getItem('favourites');
+        console.log('previousFav', previousFav);
+        if (previousFav !== null) {
+          this.favourites = JSON.parse(previousFav);
+          const favStops = Object.keys(stopList).filter((key) => this.favourites[key]);
+          this.setState({stops: favStops});
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+      this.setState({isFavScreen: true});
+    }
   }
 
   handleSearchChange = (text) => {
     let newStops = Object.keys(stopList);
+    if (this.state.isFavScreen) {
+      newStops = newStops.filter((key) => this.favourites[key]);
+    }
     if (text) {
       const searchText = text.toLowerCase();
       newStops = newStops.filter((stop) => stop.toLowerCase().includes(searchText));
