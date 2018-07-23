@@ -13,7 +13,8 @@ export function fetchArrivalTimes(stopId) {
         payload: {data: responseJson.delay},
       })
     } catch (error) {
-      console.error(error);
+      alert(error);
+      console.warn(error);
     }
   }
 }

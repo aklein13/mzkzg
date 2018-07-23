@@ -1,5 +1,14 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "name": "MZKZG",
+    "version": "1.0.1",
+    "slug": "mzkgz",
+    "sdkVersion": "27.0.0",
+    "ios": {
+      "bundleIdentifier": "com.akane.mzkzg"
+    },
+    "android": {
+      "package": "com.akane.mzkzg"
+    }
   }
 }

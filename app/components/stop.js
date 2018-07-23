@@ -12,7 +12,7 @@ import {Actions} from 'react-native-router-flux';
 import {fetchArrivalTimes, clearArrivalTimes, manageFavourite} from '../actions/stop';
 
 const {height, width} = Dimensions.get('window');
-
+const refreshTimeout = 1000 * 30;
 const routeList = require('../../routes.json');
 
 const styles = StyleSheet.create({
@@ -50,15 +50,26 @@ const styles = StyleSheet.create({
 });
 
 class Stop extends Component {
+  constructor(props) {
+    super(props);
+    this.refresher = null;
+  }
+
   componentWillMount() {
     this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
   }
 
+  componentDidMount() {
+    this.refresher = setInterval(this.refresh, refreshTimeout);
+  }
+
   componentWillUnmount() {
+    clearInterval(this.refresher);
     this.props.clearArrivalTimes();
   }
 
   refresh = () => {
+    console.log('refresh');
     this.props.clearArrivalTimes();
     this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
   };
