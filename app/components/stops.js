@@ -13,14 +13,16 @@ import {loadFavourites} from '../actions/stop';
 
 export const stopList = require('../../stops.json');
 
+const STOP_HEIGHT = 39.6;
+
 const styles = StyleSheet.create({
   stop: {
     color: 'black',
     fontSize: 18,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 7,
+    paddingBottom: 7,
     paddingLeft: 5,
   },
   input: {
@@ -104,6 +106,7 @@ class Stops extends Component {
           data={isFavScreen ? Object.keys(this.props.favourites) : this.state.stops}
           renderItem={this.renderStop}
           keyExtractor={this.keyExtractor}
+          getItemLayout={(data, index) => ({length: STOP_HEIGHT, offset: STOP_HEIGHT * index, index})}
         />
         {ifFavEmpty && <Text style={{textAlign: 'center'}}>Brak ulubionych</Text>}
       </View>
