@@ -1,6 +1,6 @@
 {
   "name": "mzkzg",
-  "version": "0.2.0",
+  "version": "1.0.2",
   "private": true,
   "devDependencies": {
     "babel-plugin-transform-remove-console": "^6.9.4",

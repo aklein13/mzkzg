@@ -5,9 +5,14 @@ import {stopList} from '../components/stops';
 export function fetchArrivalTimes(stopId) {
   return async function (dispatch) {
     try {
+      console.log('GET' + API_URL + stopId);
       const response = await fetch(API_URL + stopId);
+      if (response.status === 500) {
+        console.log(response);
+        console.log('REQUEST FAILED. RETRY');
+        return fetchArrivalTimes(stopId)(dispatch);
+      }
       const responseJson = await response.json();
-      console.log(responseJson);
       dispatch({
         type: ACTIONS.FETCH_ARRIVAL_TIMES,
         payload: {data: responseJson.delay},

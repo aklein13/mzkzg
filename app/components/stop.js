@@ -121,7 +121,11 @@ class Stop extends Component {
             {this.props.stopName}
           </Text>
           {this.props.arrivalTimes &&
-          <FlatList renderItem={this.renderArrival} data={this.props.arrivalTimes}/>
+          <FlatList
+            renderItem={this.renderArrival}
+            data={this.props.arrivalTimes}
+            keyExtractor={(item, index) => item.id + index}
+          />
           }
         </View>
       </View>
