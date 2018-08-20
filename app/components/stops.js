@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {loadFavourites} from '../actions/stop';
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     color: COLORS.dark,
-  }
+  },
 });
 
 class StopItem extends PureComponent {
@@ -100,6 +101,9 @@ class Stops extends Component {
     const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
       <View>
+        {isFavScreen &&
+        <StatusBar backgroundColor={COLORS.main}/>
+        }
         {!isFavScreen &&
         <TextInput
           style={styles.input}
