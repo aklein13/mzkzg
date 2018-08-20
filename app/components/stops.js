@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {loadFavourites} from '../actions/stop';
+import {COLORS} from '../constants';
 
 export const stopList = require('../../stops.json');
 
@@ -30,9 +31,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     fontSize: 20,
-    marginTop: -10,
     marginBottom: 5,
   },
+  noFavourites: {
+    fontSize: 26,
+    textAlign: 'center',
+    marginTop: 20,
+    color: COLORS.dark,
+  }
 });
 
 class StopItem extends PureComponent {
@@ -108,7 +114,7 @@ class Stops extends Component {
           keyExtractor={this.keyExtractor}
           getItemLayout={(data, index) => ({length: STOP_HEIGHT, offset: STOP_HEIGHT * index, index})}
         />
-        {ifFavEmpty && <Text style={{textAlign: 'center'}}>Brak ulubionych</Text>}
+        {ifFavEmpty && <Text style={styles.noFavourites}>Brak ulubionych</Text>}
       </View>
     )
   }

@@ -9,7 +9,9 @@ import {
   FlatList,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {FontAwesome} from '@expo/vector-icons';
 import {fetchArrivalTimes, clearArrivalTimes, manageFavourite} from '../actions/stop';
+import {COLORS} from "../constants";
 
 const {height, width} = Dimensions.get('window');
 const refreshTimeout = 1000 * 30;
@@ -37,6 +39,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
+  stopName: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+    fontSize: 24,
+    color: COLORS.dark,
+    textAlign: 'center',
+  },
   arrival: {
     width: '100%',
     padding: 5,
@@ -48,6 +57,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+const fontSize = 26;
 
 class Stop extends Component {
   constructor(props) {
@@ -69,7 +80,6 @@ class Stop extends Component {
   }
 
   refresh = () => {
-    console.log('refresh');
     this.props.clearArrivalTimes();
     this.props.data.forEach((stop) => this.props.fetchArrivalTimes(stop.id));
   };
@@ -77,17 +87,17 @@ class Stop extends Component {
   setFav = () => this.props.manageFavourite(this.props.stopName);
 
   renderClose = () => {
-    const favText = this.props.favourites[this.props.stopName] ? 'Unfav' : 'Fav';
+    const isFav = this.props.favourites[this.props.stopName];
     return (
       <View style={styles.closeBtnContainer}>
-        <TouchableOpacity onPress={this.setFav}>
-          <Text>{favText}</Text>
+        <TouchableOpacity onPress={this.setFav} style={{paddingLeft: 10, flex: 1}}>
+          <FontAwesome name={isFav ? 'star' : 'star-o'} color={isFav ? COLORS.fav : 'black'} size={fontSize}/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.refresh}>
-          <Text>Odśwież</Text>
+        <TouchableOpacity onPress={this.refresh} style={{flex: 1, alignItems: 'center'}}>
+          <FontAwesome name="refresh" color={COLORS.main} size={fontSize}/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={Actions.pop}>
-          <Text>Zamknij</Text>
+        <TouchableOpacity onPress={Actions.pop} style={{paddingRight: 10, flex: 1, alignItems: 'flex-end'}}>
+          <FontAwesome name="close" color={COLORS.red} size={fontSize}/>
         </TouchableOpacity>
       </View>
     );
@@ -116,8 +126,8 @@ class Stop extends Component {
       <View style={[styles.container, {height, width}]}>
         {this.renderClose()}
         <View style={styles.inner}>
-          <Text>Przystanek</Text>
-          <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+          <Text style={{marginTop: 5, fontSize: 18}}>Przystanek</Text>
+          <Text style={styles.stopName}>
             {this.props.stopName}
           </Text>
           {this.props.arrivalTimes &&

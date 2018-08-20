@@ -7,19 +7,16 @@ export function fetchArrivalTimes(stopId) {
     try {
       console.log('GET' + API_URL + stopId);
       const response = await fetch(API_URL + stopId);
-      if (response.status === 500) {
-        console.log(response);
-        console.log('REQUEST FAILED. RETRY');
-        return fetchArrivalTimes(stopId)(dispatch);
-      }
+      // console.log(response);
       const responseJson = await response.json();
       dispatch({
         type: ACTIONS.FETCH_ARRIVAL_TIMES,
         payload: {data: responseJson.delay},
       })
     } catch (error) {
-      alert(error);
+      console.warn('REQUEST FAILED. RETRY');
       console.warn(error);
+      return fetchArrivalTimes(stopId)(dispatch);
     }
   }
 }
@@ -35,7 +32,6 @@ export function loadFavourites() {
   return async function (dispatch) {
     try {
       const previousFav = await AsyncStorage.getItem('favourites');
-      console.log('previousFav', previousFav);
       if (!previousFav) {
         return;
       }

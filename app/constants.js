@@ -5,3 +5,10 @@ export const ACTIONS = {
 };
 
 export const API_URL = 'http://87.98.237.99:88/delays?stopId=';
+
+export const COLORS = {
+  main: '#1A237E',
+  dark: '#212121',
+  fav: '#ffc900',
+  red: '#A71B16',
+};

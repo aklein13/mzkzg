@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {
   Scene,
   Router,
-  Overlay,
   Tabs,
   Stack,
-  Lightbox,
 } from 'react-native-router-flux'
 import {StyleSheet} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
@@ -16,6 +14,7 @@ import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
 import TabIcon from './components/TabIcon';
 import {stopReducer} from './reducers/stop';
+import {COLORS} from './constants';
 
 const styles = StyleSheet.create({
   tabBarStyle: {
@@ -42,29 +41,26 @@ export class AppRouter extends Component {
   render() {
     return (
       <Provider store={store}>
-        <RouterWithRedux sceneStyle={{marginTop: 24}}>
-          <Overlay key="overlay">
-            <Lightbox key="lightbox">
-              <Stack
-                hideNavBar
-                key="root"
-                titleStyle={{alignSelf: 'center'}}
-              >
-                <Tabs
-                  key="tabbar"
-                  swipeEnabled
-                  showLabel={false}
-                  tabBarStyle={styles.tabBarStyle}
-                  activeBackgroundColor="white"
-                  inactiveBackgroundColor="blue"
-                >
-                  <Scene key="favourites" component={Stops} title="Ulubione" initial hideNavBar icon={TabIcon}/>
-                  <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
-                </Tabs>
-                <Scene key="stop" component={Stop}/>
-              </Stack>
-            </Lightbox>
-          </Overlay>
+        <RouterWithRedux sceneStyle={{marginTop: -0.3}}>
+          <Stack
+            hideNavBar
+            key="root"
+            titleStyle={{alignSelf: 'center'}}
+          >
+            <Tabs
+              key="tabbar"
+              swipeEnabled
+              showLabel={false}
+              tabBarStyle={styles.tabBarStyle}
+              activeBackgroundColor="white"
+              inactiveBackgroundColor={COLORS.main}
+              lazy
+            >
+              <Scene key="favourites" component={Stops} title="Ulubione" initial hideNavBar icon={TabIcon}/>
+              <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
+            </Tabs>
+            <Scene key="stop" component={Stop}/>
+          </Stack>
         </RouterWithRedux>
       </Provider>
     );

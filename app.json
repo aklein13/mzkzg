@@ -1,14 +1,17 @@
 {
   "expo": {
     "name": "MZKZG",
-    "version": "1.0.2",
-    "slug": "mzkgz",
+    "version": "1.0.3",
+    "slug": "mzkzg",
     "sdkVersion": "27.0.0",
     "ios": {
       "bundleIdentifier": "com.akane.mzkzg"
     },
     "android": {
       "package": "com.akane.mzkzg"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#1A237E"
     }
   }
 }
