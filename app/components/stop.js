@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {FontAwesome} from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fetchArrivalTimes, clearArrivalTimes, manageFavourite} from '../actions/stop';
 import {COLORS} from "../constants";
 
@@ -91,13 +91,13 @@ class Stop extends Component {
     return (
       <View style={styles.closeBtnContainer}>
         <TouchableOpacity onPress={this.setFav} style={{paddingLeft: 10, flex: 1}}>
-          <FontAwesome name={isFav ? 'star' : 'star-o'} color={isFav ? COLORS.fav : 'black'} size={fontSize}/>
+          <FontAwesome5 name={isFav ? 'star' : 'star-o'} color={isFav ? COLORS.fav : 'black'} size={fontSize}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.refresh} style={{flex: 1, alignItems: 'center'}}>
-          <FontAwesome name="refresh" color={COLORS.main} size={fontSize}/>
+          <FontAwesome5 name="refresh" color={COLORS.main} size={fontSize}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={Actions.pop} style={{paddingRight: 10, flex: 1, alignItems: 'flex-end'}}>
-          <FontAwesome name="close" color={COLORS.red} size={fontSize}/>
+          <FontAwesome5 name="close" color={COLORS.red} size={fontSize}/>
         </TouchableOpacity>
       </View>
     );

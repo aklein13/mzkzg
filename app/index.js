@@ -5,7 +5,7 @@ import {
   Tabs,
   Stack,
 } from 'react-native-router-flux'
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
 import Stops from './components/stops';
@@ -29,6 +29,8 @@ let rootReducer = combineReducers({
 
 export let store;
 
+export const isIos = Platform.OS === 'ios';
+
 store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const RouterWithRedux = connect()(Router);
 
@@ -41,7 +43,7 @@ export class AppRouter extends Component {
   render() {
     return (
       <Provider store={store}>
-        <RouterWithRedux sceneStyle={{marginTop: -0.3}}>
+        <RouterWithRedux sceneStyle={{marginTop: -0.3, paddingTop: isIos ? 10 : 0}}>
           <Stack
             hideNavBar
             key="root"

@@ -1,0 +1,32 @@
+dependencies: \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Profiler/RCTPerfMonitor.m \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Modules/RCTDevSettings.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Profiler/RCTFPSGraph.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTJavaScriptExecutor.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTPerformanceLogger.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTRootView.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Modules/RCTUIManager.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTViewManager.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTConvert.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTAnimationType.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTBorderStyle.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTPointerEvents.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTTextDecorationLineType.h \
+  /Users/akane/PycharmProjects/mzkzg/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/akane/PycharmProjects/mzkzg/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/akane/PycharmProjects/mzkzg/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/UIView+React.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/Base/RCTBridge+Private.h \
+  /Users/akane/PycharmProjects/mzkzg/node_modules/react-native/React/DevSupport/RCTDevMenu.h
