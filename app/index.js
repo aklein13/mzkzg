@@ -5,7 +5,7 @@ import {
   Tabs,
   Stack,
 } from 'react-native-router-flux'
-import {StyleSheet, Platform} from 'react-native';
+import {StyleSheet, Platform, StatusBar} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
 import Stops from './components/stops';
@@ -37,6 +37,7 @@ const RouterWithRedux = connect()(Router);
 export class AppRouter extends Component {
 
   componentWillMount() {
+    StatusBar.setBackgroundColor(COLORS.main);
     console.disableYellowBox = true;
   }
 

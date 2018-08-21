@@ -2,18 +2,32 @@ import {ACTIONS, API_URL} from '../constants';
 import {AsyncStorage} from 'react-native';
 import {stopList} from '../components/stops';
 
-export function fetchArrivalTimes(stopId) {
+let currentStop = null;
+
+export function setCurrentStop(stop) {
+  return function (dispatch) {
+    currentStop = stop ? stop.name : null;
+    dispatch({type: ACTIONS.CLEAR_FETCHING_STOPS});
+  }
+}
+
+export function fetchArrivalTimes(stopId, stopName) {
+  if (stopName !== currentStop) {
+    return {type: 'exit'};
+  }
   return async function (dispatch) {
     try {
+      dispatch({type: ACTIONS.START_FETCH_ARRIVAL_TIMES});
       console.log('GET' + API_URL + stopId);
       const response = await fetch(API_URL + stopId);
-      // console.log(response);
+      console.log(response.status);
       const responseJson = await response.json();
       dispatch({
         type: ACTIONS.FETCH_ARRIVAL_TIMES,
         payload: {data: responseJson.delay},
-      })
+      });
     } catch (error) {
+      dispatch({type: ACTIONS.FAILED_FETCH_ARRIVAL_TIMES});
       console.warn('REQUEST FAILED. RETRY');
       console.warn(error);
       return fetchArrivalTimes(stopId)(dispatch);
