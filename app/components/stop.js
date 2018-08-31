@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   inner: {
     alignItems: 'center',
-    marginHorizontal: 20,
     paddingTop: 10,
+    flex: 1,
   },
   closeBtnContainer: {
     paddingTop: 20,
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   arrivalText: {
     flex: 1,
     textAlign: 'center',
+    fontSize: 16,
   },
   noArrivals: {
     fontSize: 26,
@@ -101,7 +102,7 @@ class Stop extends Component {
 
   setFav = () => this.props.manageFavourite(this.props.stopName);
 
-  renderClose = () => {
+  renderNav = () => {
     const isFav = this.props.favourites[this.props.stopName];
     return (
       <View style={styles.closeBtnContainer}>
@@ -129,7 +130,7 @@ class Stop extends Component {
         <Text style={styles.arrivalText}>
           {routeName}
         </Text>
-        <Text style={styles.arrivalText}>
+        <Text style={[styles.arrivalText, {flex: 2}]}>
           {item.headsign}
         </Text>
         <Text style={styles.arrivalText}>
@@ -143,7 +144,7 @@ class Stop extends Component {
     const {arrivalTimes, fetchingStops} = this.props;
     return (
       <View style={[styles.container, {height, width}]}>
-        {this.renderClose()}
+        {this.renderNav()}
         <View style={styles.inner}>
           <Text style={{marginTop: 5, fontSize: 18}}>
             Przystanek
