@@ -1,9 +1,11 @@
+import {AsyncStorage} from 'react-native';
 import {ACTIONS} from '../constants';
 
 const initialState = {
   arrivalTimes: null,
   favourites: {},
   fetchingStops: 0,
+  followed: {},
 };
 
 export function stopReducer(state = initialState, action) {
@@ -47,6 +49,18 @@ export function stopReducer(state = initialState, action) {
       return {
         ...state,
         favourites: action.payload,
+      };
+    case ACTIONS.LOAD_FOLLOWED:
+      return {
+        ...state,
+        followed: action.payload,
+      };
+    case ACTIONS.CHANGE_FOLLOWED:
+      const newFollowed = {...state.followed, [action.payload]: !state.followed[action.payload]};
+      AsyncStorage.setItem('followed', JSON.stringify(newFollowed));
+      return {
+        ...state,
+        followed: newFollowed,
       };
     default:
       return state

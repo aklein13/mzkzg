@@ -5,6 +5,8 @@ export const ACTIONS = {
   CLEAR_FETCHING_STOPS: 'clear_fetching_stops',
   CLEAR_ARRIVAL_TIMES: 'clear_arrival_times',
   LOAD_FAVOURITES: 'load_favourites',
+  CHANGE_FOLLOWED: 'change_followed',
+  LOAD_FOLLOWED: 'load_followed',
 };
 
 export const API_URL = 'http://87.98.237.99:88/delays?stopId=';

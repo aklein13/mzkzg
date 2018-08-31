@@ -18,7 +18,7 @@ export function fetchArrivalTimes(stopId, stopName) {
   return async function (dispatch) {
     try {
       dispatch({type: ACTIONS.START_FETCH_ARRIVAL_TIMES});
-      console.log('GET' + API_URL + stopId);
+      console.log(`GET: ${API_URL}${stopId}`);
       const response = await fetch(API_URL + stopId);
       console.log(response.status);
       if (!response.ok) {
@@ -45,6 +45,32 @@ export function clearArrivalTimes() {
   }
 }
 
+export function changeFollowed(routeName) {
+  return function (dispatch) {
+    dispatch({
+      type: ACTIONS.CHANGE_FOLLOWED,
+      payload: routeName,
+    });
+  }
+}
+
+export function loadFollowed() {
+  return async function (dispatch) {
+    try {
+      const previousFollowed = await AsyncStorage.getItem('followed');
+      if (!previousFollowed) {
+        return;
+      }
+      const followed = JSON.parse(previousFollowed);
+      dispatch({
+        type: ACTIONS.LOAD_FOLLOWED,
+        payload: followed,
+      })
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+}
 
 export function loadFavourites() {
   return async function (dispatch) {

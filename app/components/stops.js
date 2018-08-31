@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import {loadFavourites} from '../actions/stop';
+import {loadFavourites, loadFollowed} from '../actions/stop';
 import {COLORS} from '../constants';
 
 export const stopList = require('../../stops.json');
@@ -72,6 +72,7 @@ class Stops extends Component {
     if (this.props.name === '_favourites') {
       this.props.loadFavourites();
       this.setState({isFavScreen: true});
+      this.props.loadFollowed();
     }
   }
 
@@ -127,6 +128,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatch = {
   loadFavourites,
+  loadFollowed,
 };
 
 export default connect(mapStateToProps, mapDispatch)(Stops);

@@ -9,10 +9,11 @@ import {
   FlatList,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {fetchArrivalTimes, clearArrivalTimes, manageFavourite, setCurrentStop} from '../actions/stop';
+import {fetchArrivalTimes, clearArrivalTimes, manageFavourite, setCurrentStop, changeFollowed} from '../actions/stop';
 import {COLORS} from '../constants';
 
 const {height, width} = Dimensions.get('window');
@@ -122,21 +123,36 @@ class Stop extends Component {
     );
   };
 
+  handleLongPress = (routeName) => {
+    const isFollowed = this.props.followed[routeName];
+    Alert.alert(
+      routeName,
+      `${isFollowed ? 'Usunąć' : 'Dodać'} ${routeName} ${isFollowed ? 'z' : 'do'} ulubionych linii?`,
+      [
+        {text: 'Anuluj', onPress: null, style: 'cancel'},
+        {text: 'Tak', onPress: () => this.props.changeFollowed(routeName)},
+      ],
+    );
+  };
+
   renderArrival = ({item}) => {
     let routeName = routeList[item.routeId];
     routeName = routeName ? routeName.name : '';
+    const textStyle = this.props.followed[routeName] ? {fontWeight: 'bold'} : {};
     return (
-      <View style={styles.arrival}>
-        <Text style={styles.arrivalText}>
-          {routeName}
-        </Text>
-        <Text style={[styles.arrivalText, {flex: 2}]}>
-          {item.headsign}
-        </Text>
-        <Text style={styles.arrivalText}>
-          {item.estimatedTime}
-        </Text>
-      </View>
+      <TouchableOpacity onLongPress={() => this.handleLongPress(routeName)}>
+        <View style={styles.arrival}>
+          <Text style={[styles.arrivalText, textStyle]}>
+            {routeName}
+          </Text>
+          <Text style={[styles.arrivalText, {flex: 2}, textStyle]}>
+            {item.headsign}
+          </Text>
+          <Text style={[styles.arrivalText, textStyle]}>
+            {item.estimatedTime}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -179,6 +195,7 @@ class Stop extends Component {
 const mapStateToProps = (state) => ({
   first: null,
   arrivalTimes: state.stopReducer.arrivalTimes,
+  followed: state.stopReducer.followed,
   favourites: state.stopReducer.favourites,
   fetchingStops: state.stopReducer.fetchingStops,
 });
@@ -188,6 +205,7 @@ const mapDispatch = {
   clearArrivalTimes,
   manageFavourite,
   setCurrentStop,
+  changeFollowed,
 };
 
 export default connect(mapStateToProps, mapDispatch)(Stop);
