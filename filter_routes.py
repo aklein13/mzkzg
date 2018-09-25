@@ -21,7 +21,7 @@ with open('./downloaded/routes.json', encoding="utf8") as f:
             print(new_route)
             routes[route_id] = new_route
     print(f'Found {len(routes.keys())} routes')
-    should_save = input('Do you want to save? (y/n)\n') == 'y'
+    should_save = input('Do you want to save? (y/n)\n').lower() == 'y'
     if should_save:
         with open('routes.json', 'w') as output:
             json.dump(routes, output)
