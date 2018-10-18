@@ -20,11 +20,13 @@ Although it display the data only up to something like 30 minutes into the futur
 ## Screenshots:
 
 ### List of stops
-![Stops](./docs/stops.png)
-You can search in general stop list including every stop from every city.
+<img src="https://imgur.com/EwkesXl.jpg" width="250px"/>
+
+You can search in general stop list including every stop from every city or filter by favourites.
 
 ### Stop timetable
-![Stop](./docs/stop.png)
+<img src="https://imgur.com/5CnLBof.jpg" width="250px"/>
+
 List of departures for specified stop alongside with headsign and destination.
 - Press star to add a stop to favourites
 - Press refresh icon or use refresh gesture to refresh the list
