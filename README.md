@@ -6,7 +6,7 @@ The data comes from [Tristar API](http://91.244.248.19/dataset/tristar).
 Keep in  mind that the data is not 100% accurate. 
 
 It's just an approximation but usually works out much better then fixed timetable.
-Although it display the data only up to something like 30 minutes it the future.
+Although it display the data only up to something like 30 minutes into the future.
 
 ## Download
 ### Android:
