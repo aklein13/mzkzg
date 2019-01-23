@@ -39,7 +39,13 @@ List of departures for specified stop alongside with headsign and destination.
 ```bash
 $ yarn
 ```
-2. Use either `react-native run-android` or `react-native run-ios`
+2. (Android only) Go to: 
+`./node_modules/react-native-splash-screen/android/build.gradle`
+and change:
+`com.android.support:appcompat-v7:26.1.0`
+to:
+`com.android.support:appcompat-v7:23.0.1`
+3. Use either `react-native run-android` or `react-native run-ios`
 
 ## TODO:
 - fix refresh spam on entering stop timetable without active internet connection
