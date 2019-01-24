@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {
   View,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
 const fontSize = 26;
 
-class Stop extends Component {
+class Stop extends PureComponent {
   constructor(props) {
     super(props);
     this.refresher = null;
@@ -97,8 +97,10 @@ class Stop extends Component {
     if (this.props.fetchingStops) {
       return;
     }
+    clearInterval(this.refresher);
     this.props.clearArrivalTimes();
     this.fetchData();
+    this.refresher = setInterval(this.refresh, refreshTimeout);
   };
 
   setFav = () => this.props.manageFavourite(this.props.stopName);

@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {
   View,
@@ -57,7 +57,7 @@ class StopItem extends PureComponent {
   }
 }
 
-class Stops extends Component {
+class Stops extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
