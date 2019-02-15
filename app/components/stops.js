@@ -13,6 +13,10 @@ import {loadFavourites, loadFollowed} from '../actions/stop';
 import {COLORS} from '../constants';
 
 export const stopList = require('../../stops.json');
+export let allStops = {};
+Object.values(stopList).forEach(currentStops => {
+  currentStops.forEach((stop) => allStops[stop.id] = stop);
+});
 
 const STOP_HEIGHT = 39.6;
 
@@ -44,9 +48,11 @@ const styles = StyleSheet.create({
 class StopItem extends PureComponent {
   handlePress = () => this.props.onItemPress(this.props.name);
 
+  handleLongPress = () => this.props.onLongPress(this.props.name);
+
   render() {
     return (
-      <TouchableOpacity onPress={this.handlePress}>
+      <TouchableOpacity onPress={this.handlePress} onLongPress={this.handleLongPress}>
         <View>
           <Text style={styles.stop}>
             {this.props.name}
@@ -92,8 +98,10 @@ class Stops extends PureComponent {
 
   onStopPress = (name) => Actions.stop({stopName: name, data: stopList[name]});
 
+  onStopLongPress = (name) => Actions.map({active: stopList[name]});
+
   renderStop = ({item}) => (
-    <StopItem onItemPress={this.onStopPress} name={item}/>
+    <StopItem onItemPress={this.onStopPress} name={item} onLongPress={this.onStopLongPress}/>
   );
 
   render() {
@@ -117,7 +125,7 @@ class Stops extends PureComponent {
         />
         {ifFavEmpty && <Text style={styles.noFavourites}>Brak ulubionych</Text>}
       </View>
-    )
+    );
   }
 }
 
