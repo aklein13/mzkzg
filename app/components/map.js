@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {PermissionsAndroid, View, StyleSheet} from 'react-native';
-import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
+import MapView, {Callout, Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {allStops} from './stops';
 import {COLORS, mapStyles} from '../constants';
 
@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
   },
 });
 
+const markerDay = require('../assets/marker-day.jpg');
+const markerActiveDay = require('../assets/marker-active-day.jpg');
+const markerNight = require('../assets/marker-night.jpg');
+const markerActiveNight = require('../assets/marker-active-night.jpg');
+
 export default class Map extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +37,7 @@ export default class Map extends Component {
     }
 
     let line = null;
+    const activeStops = {};
     if (activeRoute) {
       // activeRoute = 'tripId:routeId'
       line = [];
@@ -40,6 +46,7 @@ export default class Map extends Component {
         if (!current) {
           return;
         }
+        activeStops[current.id] = true;
         line.push({latitude: current.stopLat, longitude: current.stopLon});
       });
     }
@@ -57,6 +64,7 @@ export default class Map extends Component {
       nightTheme,
       loading: true,
       line,
+      activeStops,
     };
     this.stops = {};
   }
@@ -76,7 +84,7 @@ export default class Map extends Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the geolocation');
-        navigator.geolocation.watchPosition((r) => console.log(r));
+        // navigator.geolocation.watchPosition((r) => console.log(r));
       } else {
         console.log('Geolocation permission denied');
       }
@@ -104,9 +112,7 @@ export default class Map extends Component {
   setPosition = (position) => this.setState({position});
 
   render() {
-    const {loading, nightTheme, position, line} = this.state;
-    console.log('line', line);
-
+    const {loading, nightTheme, position, line, activeStops} = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -125,7 +131,15 @@ export default class Map extends Component {
               key={marker.id}
               coordinate={{latitude: marker.stopLat, longitude: marker.stopLon}}
               title={marker.name}
+              image={activeStops[marker.id] ? nightTheme ? markerActiveNight : markerActiveDay : nightTheme ? markerNight : markerDay}
             />
+            //              <Callout>
+            //                 <View>
+            //                   <Text>
+            //                     {marker.name}
+            //                   </Text>
+            //                 </View>
+            //               </Callout>
           ))}
           {line && <Polyline
             coordinates={line}
