@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 5,
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
   arrivalText: {
     flex: 1,
@@ -125,14 +125,21 @@ class Stop extends PureComponent {
     );
   };
 
-  handleLongPress = (routeName) => {
+  handleLongPress = (routeName, arrival) => {
     const isFollowed = this.props.followed[routeName];
     Alert.alert(
       routeName,
-      `${isFollowed ? 'Usunąć' : 'Dodać'} ${routeName} ${isFollowed ? 'z' : 'do'} ulubionych linii?`,
+      `${routeName} : ${arrival.headsign}`,
       [
         {text: 'Anuluj', onPress: null, style: 'cancel'},
-        {text: 'Tak', onPress: () => this.props.changeFollowed(routeName)},
+        {
+          text: 'Pokaż trasę',
+          onPress: () => Actions.map({active: this.props.data, activeRoute: `${arrival.tripId}:${arrival.routeId}`}),
+        },
+        {
+          text: `${isFollowed ? 'Usuń z' : 'Dodaj do'} ulubionych`,
+          onPress: () => this.props.changeFollowed(routeName),
+        },
       ],
     );
   };
@@ -142,7 +149,7 @@ class Stop extends PureComponent {
     routeName = routeName ? routeName.name : '';
     const textStyle = this.props.followed[routeName] ? {fontWeight: 'bold'} : {};
     return (
-      <TouchableOpacity onLongPress={() => this.handleLongPress(routeName)}>
+      <TouchableOpacity onLongPress={() => this.handleLongPress(routeName, item)}>
         <View style={styles.arrival}>
           <Text style={[styles.arrivalText, textStyle]}>
             {routeName}
@@ -190,7 +197,7 @@ class Stop extends PureComponent {
           }
         </View>
       </View>
-    )
+    );
   }
 }
 

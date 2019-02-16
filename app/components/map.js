@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, View, StyleSheet} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {allStops} from './stops';
-import {mapStyles} from '../constants';
+import {COLORS, mapStyles} from '../constants';
+
+const trips = require('../../trips.json');
 
 const styles = StyleSheet.create({
   container: {
@@ -20,14 +22,31 @@ const styles = StyleSheet.create({
 export default class Map extends Component {
   constructor(props) {
     super(props);
-    console.log('active', this.props.active);
-    const {active} = this.props;
+    const {active, activeRoute} = this.props;
+
     let latitude = 54.516842;
     let longitude = 18.541941;
     if (active && active.length) {
       latitude = active[0].stopLat;
       longitude = active[0].stopLon;
     }
+
+    let line = null;
+    if (activeRoute) {
+      // activeRoute = 'tripId:routeId'
+      line = [];
+      trips[activeRoute].forEach((stop) => {
+        const current = allStops[stop];
+        if (!current) {
+          return;
+        }
+        line.push({latitude: current.stopLat, longitude: current.stopLon});
+      });
+    }
+
+    const hour = new Date().getHours();
+    const nightTheme = hour > 20 || hour < 7;
+
     this.state = {
       position: {
         latitude,
@@ -35,17 +54,11 @@ export default class Map extends Component {
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       },
-      nightTheme: false,
+      nightTheme,
       loading: true,
+      line,
     };
     this.stops = {};
-  }
-
-  componentWillMount() {
-    const hour = new Date().getHours();
-    if (hour > 20 || hour < 7) {
-      this.setState({nightTheme: true});
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -91,7 +104,9 @@ export default class Map extends Component {
   setPosition = (position) => this.setState({position});
 
   render() {
-    const {loading, nightTheme, position} = this.state;
+    const {loading, nightTheme, position, line} = this.state;
+    console.log('line', line);
+
     return (
       <View style={styles.container}>
         <MapView
@@ -112,6 +127,12 @@ export default class Map extends Component {
               title={marker.name}
             />
           ))}
+          {line && <Polyline
+            coordinates={line}
+            strokeColor={COLORS.main}
+            strokeWidth={4}
+          />
+          }
         </MapView>
       </View>
     );
