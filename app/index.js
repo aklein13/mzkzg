@@ -4,7 +4,6 @@ import {
   Router,
   Tabs,
   Stack,
-  Modal,
 } from 'react-native-router-flux'
 import {StyleSheet, Platform, StatusBar} from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
@@ -47,7 +46,6 @@ export class AppRouter extends Component {
     return (
       <Provider store={store}>
         <RouterWithRedux sceneStyle={{marginTop: -0.3, paddingTop: isIos ? 10 : 0}}>
-          <Modal>
           <Stack
             hideNavBar
             key="root"
@@ -66,9 +64,8 @@ export class AppRouter extends Component {
               <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
             </Tabs>
             <Scene key="stop" component={Stop}/>
-          </Stack>
             <Scene key="map" component={Map} />
-          </Modal>
+          </Stack>
         </RouterWithRedux>
       </Provider>
     );

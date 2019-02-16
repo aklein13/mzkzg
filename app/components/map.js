@@ -57,22 +57,36 @@ export default class Map extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          'title': 'Cool Photo App Camera Permission',
-          'message': 'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
+          'title': 'MZKZG',
+          'message': 'MZKZG wants to access your geolocation.',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
+        console.log('You can use the geolocation');
         navigator.geolocation.watchPosition((r) => console.log(r));
       } else {
-        console.log('Camera permission denied');
+        console.log('Geolocation permission denied');
       }
     } catch (err) {
       console.warn(err);
     }
-    console.log('didm');
   }
+
+  handleMapLoaded = () => {
+    if (this.state.loading) {
+      this.setState({loading: false});
+      const {active} = this.props;
+      if (active && active.length) {
+        active.some((activeStop) => {
+          if (this.stops[activeStop.id]) {
+            console.log('show');
+            this.stops[activeStop.id].showCallout();
+            return true;
+          }
+        });
+      }
+    }
+  };
 
   setPosition = (position) => this.setState({position});
 
@@ -88,7 +102,7 @@ export default class Map extends Component {
           customMapStyle={nightTheme ? mapStyles.night : mapStyles.day}
           showsUserLocation
           // loadingEnabled={true}
-          onRegionChangeComplete={() => loading && this.setState({loading: false})}
+          onRegionChangeComplete={this.handleMapLoaded}
         >
           {Object.values(allStops).map(marker => (
             <Marker
