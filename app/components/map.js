@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
-import MapView, {Callout, Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {PermissionsAndroid, View, StyleSheet} from 'react-native';
+import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {allStops} from './stops';
 import {COLORS, mapStyles} from '../constants';
 
@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const markerDay = require('../assets/marker-day.jpg');
-const markerActiveDay = require('../assets/marker-active-day.jpg');
-const markerNight = require('../assets/marker-night.jpg');
-const markerActiveNight = require('../assets/marker-active-night.jpg');
+const markerDay = '#e51d1d';
+const markerActiveDay = '#85e11a';
+const markerNight = '#720e0e';
+const markerActiveNight = '#44720f';
 
 export default class Map extends Component {
   constructor(props) {
@@ -69,10 +69,6 @@ export default class Map extends Component {
     this.stops = {};
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return this.state.loading !== nextState.loading;
-  }
-
   async componentDidMount() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -109,10 +105,11 @@ export default class Map extends Component {
     }
   };
 
-  setPosition = (position) => this.setState({position});
+  // setPosition = (position) => this.setState({position});
 
   render() {
     const {loading, nightTheme, position, line, activeStops} = this.state;
+    const size = 30 - position.longitudeDelta * 800;
     return (
       <View style={styles.container}>
         <MapView
@@ -122,24 +119,24 @@ export default class Map extends Component {
           // onRegionChange={this.setPosition}
           customMapStyle={nightTheme ? mapStyles.night : mapStyles.day}
           showsUserLocation
-          // loadingEnabled={true}
           onRegionChangeComplete={this.handleMapLoaded}
         >
-          {Object.values(allStops).map(marker => (
+          {!loading && Object.values(allStops).map(marker => (
             <Marker
               ref={(ref) => this.stops[marker.id] = ref}
-              key={marker.id}
+              key={`${marker.id}-${size}`}
               coordinate={{latitude: marker.stopLat, longitude: marker.stopLon}}
               title={marker.name}
-              image={activeStops[marker.id] ? nightTheme ? markerActiveNight : markerActiveDay : nightTheme ? markerNight : markerDay}
-            />
-            //              <Callout>
-            //                 <View>
-            //                   <Text>
-            //                     {marker.name}
-            //                   </Text>
-            //                 </View>
-            //               </Callout>
+            >
+              <View style={{
+                height: size,
+                width: size,
+                backgroundColor: activeStops[marker.id]
+                  ? nightTheme ? markerActiveNight : markerActiveDay
+                  : nightTheme ? markerNight : markerDay,
+                borderRadius: size / 2,
+              }}/>
+            </Marker>
           ))}
           {line && <Polyline
             coordinates={line}
