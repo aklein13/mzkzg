@@ -64,14 +64,16 @@ export default class Map extends Component {
     if (activeRoute) {
       // activeRoute = 'tripId:routeId'
       line = [];
-      trips[activeRoute].forEach((stop) => {
-        const current = allStops[stop];
-        if (!current) {
-          return;
-        }
-        activeStops[current.id] = true;
-        line.push({latitude: current.stopLat, longitude: current.stopLon});
-      });
+      if (trips[activeRoute]) {
+        trips[activeRoute].forEach((stop) => {
+          const current = allStops[stop];
+          if (!current) {
+            return;
+          }
+          activeStops[current.id] = true;
+          line.push({latitude: current.stopLat, longitude: current.stopLon});
+        });
+      }
     }
 
     const hour = new Date().getHours();
@@ -102,7 +104,6 @@ export default class Map extends Component {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the geolocation');
         // navigator.geolocation.watchPosition((r) => console.log(r));
       } else {
         console.log('Geolocation permission denied');
@@ -128,12 +129,18 @@ export default class Map extends Component {
   };
 
   renderCluster = (cluster, onPress) => {
-    const {pointCount, coordinate} = cluster;
+    const {pointCount, coordinate, clusterId} = cluster;
+    const clusteringEngine = this.map.getClusteringEngine();
+    const clusteredPoints = clusteringEngine.getLeaves(clusterId, 100);
     const {nightTheme} = this.state;
+    const isActive = clusteredPoints.some((point) => this.state.activeStops[point.properties.item.id]);
     return (
       <Marker coordinate={coordinate} onPress={onPress}>
-        <View style={[styles.cluster,
-          {backgroundColor: nightTheme ? markerNight : markerDay},
+        <View style={[styles.cluster, {
+          backgroundColor: isActive
+            ? nightTheme ? markerActiveNight : markerActiveDay
+            : nightTheme ? markerNight : markerDay,
+        },
         ]}>
           <Text style={styles.clusterText}>
             {pointCount}
@@ -174,7 +181,10 @@ export default class Map extends Component {
           onRegionChangeComplete={this.handleMapLoaded}
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
-          maxZoom={12}
+          maxZoom={13}
+          ref={(r) => {
+            this.map = r;
+          }}
         >
           {line && <Polyline
             coordinates={line}
