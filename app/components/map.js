@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
-import {PermissionsAndroid, View, StyleSheet} from 'react-native';
-import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {PermissionsAndroid, Text, View, StyleSheet} from 'react-native';
+import {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import ClusteredMapView from 'react-native-maps-super-cluster';
 import {allStops} from './stops';
 import {COLORS, mapStyles} from '../constants';
 
 const trips = require('../../trips.json');
+
+const markerSize = 18;
+
+const markerDay = '#e51d1d';
+const markerActiveDay = '#85e11a';
+const markerNight = '#720e0e';
+const markerActiveNight = '#44720f';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,12 +25,27 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  marker: {
+    height: markerSize,
+    width: markerSize,
+    borderRadius: markerSize / 2,
+  },
+  cluster: {
+    height: markerSize,
+    width: markerSize,
+    borderRadius: markerSize / 2,
+
+  },
+  clusterText: {
+    color: 'white',
+    textAlign: 'center',
+  },
 });
 
-const markerDay = '#e51d1d';
-const markerActiveDay = '#85e11a';
-const markerNight = '#720e0e';
-const markerActiveNight = '#44720f';
+const markers = Object.values(allStops).map((stop) => ({
+  ...stop,
+  location: {latitude: stop.stopLat, longitude: stop.stopLon},
+}));
 
 export default class Map extends Component {
   constructor(props) {
@@ -58,8 +81,8 @@ export default class Map extends Component {
       position: {
         latitude,
         longitude,
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
+        latitudeDelta: 0.006,
+        longitudeDelta: 0.006,
       },
       nightTheme,
       loading: true,
@@ -96,7 +119,6 @@ export default class Map extends Component {
       if (active && active.length) {
         active.some((activeStop) => {
           if (this.stops[activeStop.id]) {
-            console.log('show');
             this.stops[activeStop.id].showCallout();
             return true;
           }
@@ -105,46 +127,62 @@ export default class Map extends Component {
     }
   };
 
-  // setPosition = (position) => this.setState({position});
+  renderCluster = (cluster, onPress) => {
+    const {pointCount, coordinate} = cluster;
+    const {nightTheme} = this.state;
+    return (
+      <Marker coordinate={coordinate} onPress={onPress}>
+        <View style={[styles.cluster,
+          {backgroundColor: nightTheme ? markerNight : markerDay},
+        ]}>
+          <Text style={styles.clusterText}>
+            {pointCount}
+          </Text>
+        </View>
+      </Marker>
+    );
+  };
+
+  renderMarker = (marker) => (
+    <Marker
+      ref={(ref) => this.stops[marker.id] = ref}
+      key={marker.id}
+      coordinate={marker.location}
+      title={marker.name}
+    >
+      <View
+        style={[styles.marker, {
+          backgroundColor: this.state.activeStops[marker.id]
+            ? this.state.nightTheme ? markerActiveNight : markerActiveDay
+            : this.state.nightTheme ? markerNight : markerDay,
+        }]}
+      />
+    </Marker>
+  );
 
   render() {
-    const {loading, nightTheme, position, line, activeStops} = this.state;
-    const size = 30 - position.longitudeDelta * 800;
+    const {nightTheme, position, line} = this.state;
     return (
       <View style={styles.container}>
-        <MapView
+        <ClusteredMapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
+          data={markers}
           initialRegion={position}
-          // onRegionChange={this.setPosition}
           customMapStyle={nightTheme ? mapStyles.night : mapStyles.day}
           showsUserLocation
           onRegionChangeComplete={this.handleMapLoaded}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
+          maxZoom={12}
         >
-          {!loading && Object.values(allStops).map(marker => (
-            <Marker
-              ref={(ref) => this.stops[marker.id] = ref}
-              key={`${marker.id}-${size}`}
-              coordinate={{latitude: marker.stopLat, longitude: marker.stopLon}}
-              title={marker.name}
-            >
-              <View style={{
-                height: size,
-                width: size,
-                backgroundColor: activeStops[marker.id]
-                  ? nightTheme ? markerActiveNight : markerActiveDay
-                  : nightTheme ? markerNight : markerDay,
-                borderRadius: size / 2,
-              }}/>
-            </Marker>
-          ))}
           {line && <Polyline
             coordinates={line}
             strokeColor={COLORS.main}
             strokeWidth={4}
           />
           }
-        </MapView>
+        </ClusteredMapView>
       </View>
     );
   }
