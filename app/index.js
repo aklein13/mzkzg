@@ -10,6 +10,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
 import Stops from './components/stops';
 import Stop from './components/stop';
+import Map from './components/map';
 import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
 import TabIcon from './components/TabIcon';
@@ -63,6 +64,7 @@ export class AppRouter extends Component {
               <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
             </Tabs>
             <Scene key="stop" component={Stop}/>
+            <Scene key="map" component={Map} />
           </Stack>
         </RouterWithRedux>
       </Provider>
