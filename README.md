@@ -14,9 +14,6 @@ Although it display the data only up to something like 30 minutes into the futur
 2. Download .apk from [Releases](https://github.com/aklein13/mzkzg/releases)
 3. Install it
 
-### iOS
-###### Coming soon!
-
 ## Screenshots:
 
 ### List of stops

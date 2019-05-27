@@ -1,6 +1,6 @@
 import json
 
-with open('./downloaded/trips.json', encoding="utf8") as f:
+with open('./downloaded/stopsintrips.json', encoding="utf8") as f:
     data = json.load(f)
     trips = {}
     # Output in format: {"route_id": ["stop_id", "stop_id"]}
