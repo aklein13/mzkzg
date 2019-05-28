@@ -18,9 +18,7 @@ export function fetchArrivalTimes(stopId, stopName) {
   return async function (dispatch) {
     try {
       dispatch({type: ACTIONS.START_FETCH_ARRIVAL_TIMES});
-      console.log(`GET: ${API_URL}${stopId}`);
       const response = await fetch(API_URL + stopId);
-      console.log(response.status);
       if (!response.ok) {
         throw response.status;
       }
@@ -32,7 +30,6 @@ export function fetchArrivalTimes(stopId, stopName) {
     } catch (error) {
       dispatch({type: ACTIONS.FAILED_FETCH_ARRIVAL_TIMES});
       ToastAndroid.show(`Błąd połączenia: ${error}`, ToastAndroid.SHORT);
-      console.warn('REQUEST FAILED. RETRY');
       console.warn(error);
       return fetchArrivalTimes(stopId, stopName)(dispatch);
     }
