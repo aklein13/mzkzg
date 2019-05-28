@@ -19,7 +19,8 @@ Although it display the data only up to something like 30 minutes into the futur
 ### List of stops
 <img src="https://imgur.com/EwkesXl.jpg" width="250px"/>
 
-You can search in general stop list including every stop from every city or filter by favourites.
+- You can search in general stop list including every stop from every city or filter by favourites.
+- Long press on a stop name to show it on the map
 
 ### Stop timetable
 <img src="https://imgur.com/5CnLBof.jpg" width="250px"/>
@@ -28,7 +29,11 @@ List of departures for specified stop alongside with headsign and destination.
 - Press star to add a stop to favourites
 - Press refresh icon or use refresh gesture to refresh the list
 - Press red cross to exit
-- Long press to add a bus line to favourites which will be indicated with a bold font on every stop.
+- Press to add a bus line to open menu in which you can:
+    - add bus line to favourites which will be indicated with a bold font on every stop
+    - display bus line on the map
+
+### Map
 
 
 ## Dev Instruction:

@@ -125,7 +125,7 @@ class Stop extends PureComponent {
     );
   };
 
-  handleLongPress = (routeName, arrival) => {
+  handlePress = (routeName, arrival) => {
     const isFollowed = this.props.followed[routeName];
     Alert.alert(
       routeName,
@@ -149,7 +149,7 @@ class Stop extends PureComponent {
     routeName = routeName ? routeName.name : '';
     const textStyle = this.props.followed[routeName] ? {fontWeight: 'bold'} : {};
     return (
-      <TouchableOpacity onLongPress={() => this.handleLongPress(routeName, item)}>
+      <TouchableOpacity onPress={() => this.handlePress(routeName, item)}>
         <View style={styles.arrival}>
           <Text style={[styles.arrivalText, textStyle]}>
             {routeName}
