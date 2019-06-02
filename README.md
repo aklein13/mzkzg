@@ -34,7 +34,9 @@ List of departures for specified stop alongside with headsign and destination.
     - display bus line on the map
 
 ### Map
+<img src="https://i.imgur.com/bTKgGV6.png" width="250px"/>
 
+Map of stops (long press on the stop name) or stops with a route (press on the departure).
 
 ## Dev Instruction:
 1. After downloading repository run [Yarn](https://yarnpkg.com/)
