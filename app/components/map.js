@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {PermissionsAndroid, Text, View, StyleSheet} from 'react-native';
 import {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import ClusteredMapView from 'react-native-maps-super-cluster';
-import {allStops} from './stops';
+import {allStops, stopList} from './stops';
 import {COLORS, mapStyles} from '../constants';
+import {Actions} from 'react-native-router-flux';
 
 const trips = require('../../trips.json');
 
@@ -156,6 +157,7 @@ export default class Map extends Component {
       key={marker.id}
       coordinate={marker.location}
       title={marker.name}
+      onCalloutPress={() => Actions.stop({stopName: marker.name, data: stopList[marker.name]})}
     >
       <View
         style={[styles.marker, {
