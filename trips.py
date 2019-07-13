@@ -14,7 +14,6 @@ with open('./downloaded/stopsintrips.json', encoding="utf8") as f:
             if not trips.get(trips_key):
                 trips[trips_key] = {}
             stop_id = trip.get('stopId')
-            route_id = trip.get('routeId')
             stop_sequence = trip.get('stopSequence')
             trips[trips_key].update({stop_sequence: stop_id})
     for key, item in trips.items():

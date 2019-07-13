@@ -1,7 +1,7 @@
 # MZKZG
 
 ### Polish app displaying a real time timetable from Tristar stop system in Tri-City.
-The data comes from [Tristar API](http://91.244.248.19/dataset/tristar).
+The data comes from [Tristar API](http://ckan.multimediagdansk.pl/dataset/tristar).
 
 Keep in  mind that the data is not 100% accurate. 
 
@@ -43,11 +43,7 @@ Map of stops (long press on the stop name) or stops with a route (press on the d
 ```bash
 $ yarn
 ```
-2. Use either `react-native run-android` or `react-native run-ios`
+2. Use `react-native run-android`
 
 ## TODO:
-- fix refresh spam on entering stop timetable without active internet connection
-- iOS app release
 - sort stops by distance from the user (GPS)
-- display stops on the map
-- display bus routes on the map?
