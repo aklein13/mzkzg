@@ -1,15 +1,26 @@
 import {ACTIONS, API_URL} from '../constants';
 import {AsyncStorage, ToastAndroid} from 'react-native';
 import {stopList} from '../components/stops';
+import {isIos} from '../index';
 
 let currentStop = null;
+let currentToast = null;
 
 export function setCurrentStop(stop) {
   return function (dispatch) {
     currentStop = stop ? stop.name : null;
     dispatch({type: ACTIONS.CLEAR_FETCHING_STOPS});
-  }
+  };
 }
+
+// Prevents Toast spam
+const showToast = (message) => {
+  if (currentToast || isIos) {
+    return;
+  }
+  currentToast = setTimeout(() => currentToast = null, 3000);
+  ToastAndroid.show(message, ToastAndroid.SHORT);
+};
 
 export function fetchArrivalTimes(stopId, stopName) {
   if (stopName !== currentStop) {
@@ -29,17 +40,23 @@ export function fetchArrivalTimes(stopId, stopName) {
       });
     } catch (error) {
       dispatch({type: ACTIONS.FAILED_FETCH_ARRIVAL_TIMES});
-      ToastAndroid.show(`Błąd połączenia: ${error}`, ToastAndroid.SHORT);
+      showToast(`Błąd połączenia: ${error}`);
       console.warn(error);
-      return fetchArrivalTimes(stopId, stopName)(dispatch);
+      // Retry failed request every 3 seconds
+      return setTimeout(() => {
+        try {
+          return fetchArrivalTimes(stopId, stopName)(dispatch);
+        } catch (e) {
+        }
+      }, 3000);
     }
-  }
+  };
 }
 
 export function clearArrivalTimes() {
   return function (dispatch) {
     dispatch({type: ACTIONS.CLEAR_ARRIVAL_TIMES});
-  }
+  };
 }
 
 export function changeFollowed(routeName) {
@@ -48,7 +65,7 @@ export function changeFollowed(routeName) {
       type: ACTIONS.CHANGE_FOLLOWED,
       payload: routeName,
     });
-  }
+  };
 }
 
 export function loadFollowed() {
@@ -62,11 +79,11 @@ export function loadFollowed() {
       dispatch({
         type: ACTIONS.LOAD_FOLLOWED,
         payload: followed,
-      })
+      });
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 }
 
 export function loadFavourites() {
@@ -80,11 +97,11 @@ export function loadFavourites() {
       dispatch({
         type: ACTIONS.LOAD_FAVOURITES,
         payload: favourites,
-      })
+      });
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 }
 
 export function manageFavourite(stopName) {
@@ -94,8 +111,7 @@ export function manageFavourite(stopName) {
     const nextFav = {...favourites};
     if (nextFav[stopName]) {
       delete nextFav[stopName];
-    }
-    else {
+    } else {
       nextFav[stopName] = stopList[stopName];
     }
     dispatch({
@@ -107,5 +123,5 @@ export function manageFavourite(stopName) {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 }
