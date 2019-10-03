@@ -1,6 +1,6 @@
 {
   "name": "mzkzg",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": true,
   "devDependencies": {
     "@types/react-native": "^0.56.10",
