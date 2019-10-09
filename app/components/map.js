@@ -16,15 +16,9 @@ const markerNight = '#720e0e';
 const markerActiveNight = '#44720f';
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
+    width: '100%',
   },
   marker: {
     height: markerSize,
@@ -172,30 +166,26 @@ export default class Map extends Component {
   render() {
     const {nightTheme, position, line} = this.state;
     return (
-      <View style={styles.container}>
-        <ClusteredMapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          data={markers}
-          initialRegion={position}
-          customMapStyle={nightTheme ? mapStyles.night : mapStyles.day}
-          showsUserLocation
-          onRegionChangeComplete={this.handleMapLoaded}
-          renderMarker={this.renderMarker}
-          renderCluster={this.renderCluster}
-          maxZoom={13}
-          ref={(r) => {
-            this.map = r;
-          }}
-        >
-          {line && <Polyline
-            coordinates={line}
-            strokeColor={COLORS.main}
-            strokeWidth={4}
-          />
-          }
-        </ClusteredMapView>
-      </View>
+      <ClusteredMapView
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        data={markers}
+        initialRegion={position}
+        customMapStyle={nightTheme ? mapStyles.night : mapStyles.day}
+        showsUserLocation
+        onRegionChangeComplete={this.handleMapLoaded}
+        renderMarker={this.renderMarker}
+        renderCluster={this.renderCluster}
+        maxZoom={13}
+        ref={(r) => this.map = r}
+      >
+        {line && <Polyline
+          coordinates={line}
+          strokeColor={COLORS.main}
+          strokeWidth={4}
+        />
+        }
+      </ClusteredMapView>
     );
   }
 }
