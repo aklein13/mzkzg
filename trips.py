@@ -19,7 +19,7 @@ with gzip.GzipFile('./downloaded/stopsintrips.json.gz', 'r') as fin:
             trips[trips_key].update({stop_sequence: stop_id})
     for key, item in trips.items():
         trips[key] = [item[sequence] for sequence in sorted(item.keys())]
-    print(f'Found {len(trips.keys())} trips')
+    print(f'Found {len(trips)} trips')
     should_save = input('Do you want to save? (y/n)\n').lower() == 'y'
     if should_save:
         with open('trips.json', 'w') as output:

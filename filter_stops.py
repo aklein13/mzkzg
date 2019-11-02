@@ -30,7 +30,7 @@ with gzip.GzipFile('./downloaded/stops.json.gz', 'r') as fin:
         else:
             stops_new[name] = [value]
     stops_new = {key: stops_new[key] for key in sorted(stops_new)}
-    print(stops_new)
+    print(f'Found {len(stops_new)} stops')
     should_save = input('Do you want to save? (y/n)\n').lower() == 'y'
     if should_save:
         with open('stops.json', 'w') as output:

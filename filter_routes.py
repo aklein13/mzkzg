@@ -19,9 +19,8 @@ with gzip.GzipFile('./downloaded/routes.json.gz', 'r') as fin:
                     elif key == 'routeShortName':
                         key = 'name'
                     new_route[key] = value
-            print(new_route)
             routes[route_id] = new_route
-    print(f'Found {len(routes.keys())} routes')
+    print(f'Found {len(routes)} routes')
     should_save = input('Do you want to save? (y/n)\n').lower() == 'y'
     if should_save:
         with open('routes.json', 'w') as output:
