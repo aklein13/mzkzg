@@ -1,9 +1,10 @@
+import gzip
 import json
 
 useful_keys = ['routeId', 'agencyId', 'routeShortName', 'routeLongName']
 
-with open('./downloaded/routes.json', encoding="utf8") as f:
-    data = json.load(f)
+with gzip.GzipFile('./downloaded/routes.json.gz', 'r') as fin:
+    data = json.loads(fin.read().decode('utf-8'))
     routes = {}
     for date_key in data.keys():
         current_data = data[date_key]['routes']

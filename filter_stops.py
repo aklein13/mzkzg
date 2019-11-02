@@ -1,9 +1,10 @@
+import gzip
 import json
 
 useful_keys = ['stopId', 'stopDesc', 'stopName', 'stopLat', 'stopLon']
 
-with open('./downloaded/stops.json', encoding="utf8") as f:
-    data = json.load(f)
+with gzip.GzipFile('./downloaded/stops.json.gz', 'r') as fin:
+    data = json.loads(fin.read().decode('utf-8'))
     data = data[list(data.keys())[0]]
     stops = {}
     for stop in data['stops']:

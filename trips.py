@@ -1,7 +1,8 @@
+import gzip
 import json
 
-with open('./downloaded/stopsintrips.json', encoding="utf8") as f:
-    data = json.load(f)
+with gzip.GzipFile('./downloaded/stopsintrips.json.gz', 'r') as fin:
+    data = json.loads(fin.read().decode('utf-8'))
     trips = {}
     # Output in format: {"route_id": ["stop_id", "stop_id"]}
     for date_key in data.keys():
