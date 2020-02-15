@@ -1,0 +1,23 @@
+diff --git a/node_modules/metro/src/blacklist.js b/node_modules/metro/src/blacklist.js
+index 1a72099..0ec9705 100644
+--- a/node_modules/metro/src/blacklist.js
++++ b/node_modules/metro/src/blacklist.js
+@@ -13,13 +13,11 @@ var path = require('path');
+ // Don't forget to everything listed here to `package.json`
+ // modulePathIgnorePatterns.
+ var sharedBlacklist = [
+-/node_modules[/\\]react[/\\]dist[/\\].*/,
+-
+-/website\/node_modules\/.*/,
+-
+-/heapCapture\/bundle\.js/,
+-
+-/.*\/__tests__\/.*/];
++  /node_modules[\/\\]react[\/\\]dist[\/\\].*/,
++  /website\/node_modules\/.*/,
++  /heapCapture\/bundle\.js/,
++  /.*\/__tests__\/.*/
++];
+ 
+ 
+ function escapeRegExp(pattern) {
