@@ -94,8 +94,8 @@ export default class Map extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          'title': 'MZKZG',
-          'message': 'MZKZG wants to access your geolocation.',
+          'title': 'TriStop',
+          'message': 'TriStop wants to access your geolocation.',
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {

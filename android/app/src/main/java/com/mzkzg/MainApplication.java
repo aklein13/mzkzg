@@ -1,4 +1,4 @@
-package com.mzkzg;
+package dev.akane.tripstop;
 
 import android.app.Application;
 

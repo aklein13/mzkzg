@@ -1,4 +1,4 @@
-package com.mzkzg;
+package dev.akane.tripstop;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "mzkzg";
+        return "tristop";
     }
 
     @Override

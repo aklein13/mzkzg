@@ -1,4 +1,4 @@
-# MZKZG
+# TriStop
 
 ### Polish app displaying a real time timetable from Tristar stop system in Tri-City.
 The data comes from [Tristar API](http://ckan.multimediagdansk.pl/dataset/tristar).
