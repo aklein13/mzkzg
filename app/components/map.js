@@ -17,7 +17,7 @@ const markerActiveNight = '#44720f';
 
 const styles = StyleSheet.create({
   map: {
-    flex: 1,
+    height: '100%',
     width: '100%',
   },
   marker: {
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     height: markerSize,
     width: markerSize,
     borderRadius: markerSize / 2,
-
   },
   clusterText: {
     color: 'white',
