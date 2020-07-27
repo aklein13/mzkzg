@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
   stop: {
     color: 'black',
     fontSize: 18,
-    borderBottomColor: 'black',
+    borderBottomColor: COLORS.main,
     borderBottomWidth: 1,
-    paddingTop: 7,
-    paddingBottom: 7,
+    paddingVertical: 7,
     paddingLeft: 5,
   },
   input: {
@@ -115,6 +114,7 @@ class Stops extends PureComponent {
           onChangeText={this.handleSearchChange}
           value={this.state.search}
           placeholder={'Wyszukaj'}
+          underlineColorAndroid={COLORS.main}
         />
         }
         <FlatList

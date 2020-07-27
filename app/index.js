@@ -52,7 +52,7 @@ export class AppRouter extends Component {
     console.disableYellowBox = true;
     const previousFav = await AsyncStorage.getItem('favourites');
     if (!previousFav) {
-      return;
+      return Actions['stops']();
     }
     const favourites = JSON.parse(previousFav);
     if (!Object.keys(favourites).length) {
