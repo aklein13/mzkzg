@@ -17,7 +17,7 @@ const markerActiveNight = '#44720f';
 
 const styles = StyleSheet.create({
   map: {
-    height: '100%',
+    flex: 1,
     width: '100%',
   },
   marker: {
@@ -177,6 +177,7 @@ export default class Map extends Component {
         renderCluster={this.renderCluster}
         maxZoom={13}
         ref={(r) => this.map = r}
+        showsMyLocationButton={false}
       >
         {line && <Polyline
           coordinates={line}
