@@ -14,7 +14,6 @@ import Stop from './components/stop';
 import Map from './components/map';
 import ReduxThunk from 'redux-thunk';
 import {routerReducer} from './reducers/routes';
-import TabIcon from './components/TabIcon';
 import {stopReducer} from './reducers/stop';
 import {COLORS} from './constants';
 import TabBar from './components/TabBar';
