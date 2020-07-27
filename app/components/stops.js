@@ -21,6 +21,9 @@ Object.values(stopList).forEach(currentStops => {
 const STOP_HEIGHT = 39.6;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingBottom: 15,
+  },
   stop: {
     color: 'black',
     fontSize: 18,
@@ -107,7 +110,7 @@ class Stops extends PureComponent {
     const {isFavScreen} = this.state;
     const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
-      <View>
+      <View style={styles.wrapper}>
         {!isFavScreen &&
         <TextInput
           style={styles.input}
