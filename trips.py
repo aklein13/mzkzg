@@ -1,6 +1,7 @@
 import gzip
 import json
 
+# http://ckan.multimediagdansk.pl/dataset/tristar/resource/3115d29d-b763-4af5-93f6-763b835967d6
 with gzip.GzipFile('./downloaded/stopsintrips.json.gz', 'r') as fin:
     data = json.loads(fin.read().decode('utf-8'))
     trips = {}

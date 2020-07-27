@@ -5,7 +5,7 @@ import os
 downloaded_path = './downloaded'
 
 for file in os.listdir(downloaded_path):
-    if not file.endswith('json'):
+    if not file.endswith('.json'):
         continue
     with open(os.path.join(downloaded_path, file), encoding='utf8') as input_file:
         data = json.load(input_file)
