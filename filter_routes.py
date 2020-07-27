@@ -3,6 +3,7 @@ import json
 
 useful_keys = ['routeId', 'agencyId', 'routeShortName', 'routeLongName']
 
+# http://ckan.multimediagdansk.pl/dataset/tristar/resource/22313c56-5acf-41c7-a5fd-dc5dc72b3851
 with gzip.GzipFile('./downloaded/routes.json.gz', 'r') as fin:
     data = json.loads(fin.read().decode('utf-8'))
     routes = {}
