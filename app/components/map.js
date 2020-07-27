@@ -5,6 +5,13 @@ import ClusteredMapView from 'react-native-maps-super-cluster';
 import {allStops, stopList} from './stops';
 import {COLORS, mapStyles} from '../constants';
 import {Actions} from 'react-native-router-flux';
+import {
+  clearArrivalTimes,
+  fetchArrivalTimes,
+  getCurrentStop,
+  setCurrentStop,
+} from '../actions/stop';
+import { connect } from 'react-redux';
 
 const trips = require('../../trips.json');
 
@@ -41,7 +48,7 @@ const markers = Object.values(allStops).map((stop) => ({
   location: {latitude: stop.stopLat, longitude: stop.stopLon},
 }));
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     const {active, activeRoute} = this.props;
@@ -86,6 +93,7 @@ export default class Map extends Component {
       activeStops,
     };
     this.stops = {};
+    this.previousStop = getCurrentStop();
   }
 
   async componentDidMount() {
@@ -104,6 +112,14 @@ export default class Map extends Component {
       }
     } catch (err) {
       console.warn(err);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.previousStop && this.previousStop !== getCurrentStop()) {
+      this.props.setCurrentStop({ name: this.previousStop });
+      const data = stopList[this.previousStop];
+      data.forEach((stop) => this.props.fetchArrivalTimes(stop.id, stop.name));
     }
   }
 
@@ -144,13 +160,19 @@ export default class Map extends Component {
     );
   };
 
+  handleCalloutPress = (marker) => {
+    this.props.setCurrentStop(stopList[marker.name][0]);
+    this.props.clearArrivalTimes();
+    Actions.stop({ stopName: marker.name, data: stopList[marker.name] });
+  };
+
   renderMarker = (marker) => (
     <Marker
       ref={(ref) => this.stops[marker.id] = ref}
       key={marker.id}
       coordinate={marker.location}
       title={marker.name}
-      onCalloutPress={() => Actions.stop({stopName: marker.name, data: stopList[marker.name]})}
+      onCalloutPress={() => this.handleCalloutPress(marker)}
     >
       <View
         style={[styles.marker, {
@@ -189,3 +211,11 @@ export default class Map extends Component {
     );
   }
 }
+
+const mapDispatch = {
+  setCurrentStop,
+  clearArrivalTimes,
+  fetchArrivalTimes,
+};
+
+export default connect(null, mapDispatch)(Map);

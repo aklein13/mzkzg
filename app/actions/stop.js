@@ -6,6 +6,10 @@ import {isIos} from '../index';
 let currentStop = null;
 let currentToast = null;
 
+export function getCurrentStop() {
+  return currentStop;
+}
+
 export function setCurrentStop(stop) {
   return function (dispatch) {
     currentStop = stop ? stop.name : null;
