@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     height: markerSize,
     width: markerSize,
     borderRadius: markerSize / 2,
-
   },
   clusterText: {
     color: 'white',
@@ -178,6 +177,7 @@ export default class Map extends Component {
         renderCluster={this.renderCluster}
         maxZoom={13}
         ref={(r) => this.map = r}
+        showsMyLocationButton={false}
       >
         {line && <Polyline
           coordinates={line}

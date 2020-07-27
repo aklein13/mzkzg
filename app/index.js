@@ -4,8 +4,9 @@ import {
   Router,
   Tabs,
   Stack,
-} from 'react-native-router-flux'
-import {StyleSheet, Platform, StatusBar} from 'react-native';
+  Actions,
+} from 'react-native-router-flux';
+import { StyleSheet, Platform, StatusBar, AsyncStorage } from 'react-native';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {connect, Provider} from 'react-redux';
 import Stops from './components/stops';
@@ -16,10 +17,19 @@ import {routerReducer} from './reducers/routes';
 import TabIcon from './components/TabIcon';
 import {stopReducer} from './reducers/stop';
 import {COLORS} from './constants';
+import TabBar from './components/TabBar';
 
 const styles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: '#eee',
+  },
+  tabBarContainer: {
+    height: 49,
+    width: '100%',
+  },
+  tab: {
+    flex: 1,
+    height: '100%',
   },
 });
 
@@ -37,9 +47,17 @@ const RouterWithRedux = connect()(Router);
 
 export class AppRouter extends Component {
 
-  componentWillMount() {
+  async componentWillMount() {
     StatusBar.setBackgroundColor(COLORS.main);
     console.disableYellowBox = true;
+    const previousFav = await AsyncStorage.getItem('favourites');
+    if (!previousFav) {
+      return;
+    }
+    const favourites = JSON.parse(previousFav);
+    if (!Object.keys(favourites).length) {
+      Actions['stops']();
+    }
   }
 
   render() {
@@ -56,12 +74,12 @@ export class AppRouter extends Component {
               swipeEnabled
               showLabel={false}
               tabBarStyle={styles.tabBarStyle}
-              activeBackgroundColor="white"
-              inactiveBackgroundColor={COLORS.main}
+              tabBarPosition={'top'}
+              tabBarComponent={TabBar}
               lazy
             >
-              <Scene key="favourites" component={Stops} title="Ulubione" initial hideNavBar icon={TabIcon}/>
-              <Scene key="stops" component={Stops} title="Przystanki" hideNavBar icon={TabIcon}/>
+              <Scene key="favourites" component={Stops} initial hideNavBar/>
+              <Scene key="stops" component={Stops} hideNavBar/>
             </Tabs>
             <Scene key="stop" component={Stop}/>
             <Scene key="map" component={Map} />
