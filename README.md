@@ -8,11 +8,10 @@ Keep in  mind that the data is not 100% accurate.
 It's just an approximation but usually works out much better then fixed timetable.
 Although it display the data only up to something like 30 minutes into the future.
 
-## Download
-### Android:
-1. Make sure you have `unknown sources` option checked
-2. Download .apk from [Releases](https://github.com/aklein13/mzkzg/releases)
-3. Install it
+## Free download
+<a href='https://play.google.com/store/apps/details?id=dev.akane.tripstop&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="150px"/>
+</a>
 
 ## Screenshots:
 
