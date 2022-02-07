@@ -1,7 +1,6 @@
 import {ACTIONS, API_URL} from '../constants';
 import {AsyncStorage, ToastAndroid} from 'react-native';
 import {stopList} from '../components/stops';
-import {isIos} from '../index';
 
 let currentStop = null;
 let currentToast = null;
@@ -19,7 +18,7 @@ export function setCurrentStop(stop) {
 
 // Prevents Toast spam
 const showToast = (message) => {
-  if (currentToast || isIos) {
+  if (currentToast) {
     return;
   }
   currentToast = setTimeout(() => currentToast = null, 3000);

@@ -39,8 +39,6 @@ let rootReducer = combineReducers({
 
 export let store;
 
-export const isIos = Platform.OS === 'ios';
-
 store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const RouterWithRedux = connect()(Router);
 
@@ -62,7 +60,7 @@ export class AppRouter extends Component {
   render() {
     return (
       <Provider store={store}>
-        <RouterWithRedux sceneStyle={{marginTop: -0.3, paddingTop: isIos ? 10 : 0}}>
+        <RouterWithRedux sceneStyle={{marginTop: -0.3}}>
           <Stack
             hideNavBar
             key="root"

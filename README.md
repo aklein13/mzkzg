@@ -6,7 +6,7 @@ The data comes from [Tristar API](http://ckan.multimediagdansk.pl/dataset/trista
 Keep in  mind that the data is not 100% accurate. 
 
 It's just an approximation but usually works out much better then fixed timetable.
-Although it display the data only up to something like 30 minutes into the future.
+Although it displays the data only up to something like 30 minutes into the future.
 
 ## Free download
 <a href='https://play.google.com/store/apps/details?id=dev.akane.tripstop&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="_blank">
