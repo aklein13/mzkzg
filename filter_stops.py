@@ -6,9 +6,11 @@ useful_keys = ['stopId', 'stopDesc', 'stopName', 'stopLat', 'stopLon']
 # http://ckan.multimediagdansk.pl/dataset/tristar/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b
 with gzip.GzipFile('./downloaded/stops.json.gz', 'r') as fin:
     data = json.loads(fin.read().decode('utf-8'))
-    data = data[list(data.keys())[0]]
+    dict_stops = []
+    for day_data in data.values():
+        dict_stops = [*dict_stops, *day_data['stops']]
     stops = {}
-    for stop in data['stops']:
+    for stop in dict_stops:
         stop_id = stop.get('stopId')
         if stops.get(stop_id):
             continue
