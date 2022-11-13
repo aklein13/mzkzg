@@ -25,4 +25,5 @@ Gemfile
 *.apk
 
 android/app/build/
+android/build/
 downloaded/*.json
