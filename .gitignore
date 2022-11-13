@@ -20,11 +20,9 @@ buck-out/
 \.buckd/
 *.keystore
 
-# fastlane
-android/fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/README.md
 *.ipa
 Gemfile
 *.apk
+
+android/app/build/
+downloaded/*.json
