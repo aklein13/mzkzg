@@ -42,7 +42,8 @@ Map of stops (long press on the stop name) or stops with a route (press on the d
 ```bash
 $ yarn
 ```
-2. Use `react-native run-android`
+2. (run) `react-native run-android`
+3. (build) `./android/gradlew bundleRelease`
 
 ## TODO:
 - sort stops by distance from the user (GPS)
