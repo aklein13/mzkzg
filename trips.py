@@ -24,4 +24,4 @@ with gzip.GzipFile('./downloaded/stopsintrips.json.gz', 'r') as fin:
     should_save = input('Do you want to save? (y/n)\n').lower() == 'y'
     if should_save:
         with open('trips.json', 'w') as output:
-            json.dump(trips, output)
+            json.dump(trips, output, separators=(',', ':'))
