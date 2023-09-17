@@ -11,6 +11,7 @@ import {
 import {Actions} from 'react-native-router-flux';
 import {loadFavourites, loadFollowed} from '../actions/stop';
 import {COLORS} from '../constants';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export const stopList = require('../../stops.json');
 export let allStops = {};
@@ -45,7 +46,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: COLORS.dark,
   },
+  sortBar: {
+    flexDirection: 'row',
+    padding: 5,
+  },
+  sortIcon: {
+    marginRight: 10,
+  },
 });
+
+const fontSize = 26;
 
 class StopItem extends PureComponent {
   handlePress = () => this.props.onItemPress(this.props.name);
@@ -65,6 +75,11 @@ class StopItem extends PureComponent {
   }
 }
 
+const sortTypes = {
+  name: 'name',
+  distance: 'distance',
+};
+
 class Stops extends PureComponent {
   constructor(props) {
     super(props);
@@ -72,6 +87,7 @@ class Stops extends PureComponent {
       search: '',
       stops: Object.keys(stopList),
       isFavScreen: false,
+      sortBy: sortTypes.name,
     };
     this.favourites = {};
   }
@@ -96,6 +112,29 @@ class Stops extends PureComponent {
     this.setState({stops: newStops, search: text});
   };
 
+  handleSort = (sortBy) => {
+    let desc = false;
+    if (sortBy === sortTypes.name && sortBy === this.state.sortBy) {
+      this.setState({ sort: `-${sortTypes}` });
+      desc = true;
+    }
+    let newStops = Object.keys(stopList);
+    if (sortBy === sortTypes.distance) {
+      newStops = newStops.sort((a, b) => {
+        const stopA = stopList[a];
+        const stopB = stopList[b];
+        return getDistanceFromLatLonInKm({ lat: stopA.stopLat, lon: stopA.stopLon }, {
+          lat: stopB.stopLat,
+          lon: stopB.stopLon,
+        });
+      });
+    }
+    if (desc) {
+      newStops = newStops.reverse();
+    }
+    this.setState({ stops: newStops, search: '' });
+  };
+
   keyExtractor = (item) => item;
 
   onStopPress = (name) => Actions.stop({stopName: name, data: stopList[name]});
@@ -111,6 +150,15 @@ class Stops extends PureComponent {
     const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
       <View style={styles.wrapper}>
+        {!isFavScreen && <View style={styles.sortBar}>
+          <TouchableOpacity onPress={() => this.handleSort(sortTypes.name)} style={styles.sortIcon}>
+            <FontAwesome5 name="sort-alpha-up" color={COLORS.main} size={fontSize}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.handleSort(sortTypes.distance)} style={styles.sortIcon}>
+            <FontAwesome5 name="location-arrow" color={COLORS.main} size={fontSize}/>
+          </TouchableOpacity>
+        </View>
+        }
         {!isFavScreen &&
         <TextInput
           style={styles.input}
