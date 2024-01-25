@@ -115,27 +115,36 @@ class Stops extends PureComponent {
       const searchText = text.toLowerCase();
       newStops = newStops.filter((stop) => stop.toLowerCase().includes(searchText));
     }
+    if (this.state.sortDesc) {
+      newStops = newStops.reverse();
+    }
     this.setState({stops: newStops, search: text});
   };
 
   getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        this.setState({
-          position: { lat: coords.latitude, lon: coords.longitude },
-        });
-      },
-      error => {},
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      }
-    );
+    return new Promise(resolve => {
+      navigator.geolocation.getCurrentPosition(
+        ({coords}) => {
+          console.log(coords);
+          this.setState({
+            position: { lat: coords.latitude, lon: coords.longitude },
+          });
+          resolve(true);
+        },
+        () => {
+          resolve(false);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 10000,
+        }
+      );
+    });
   };
 
   handleSort = async (sortBy, desc) => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, search: '' });
     if (sortBy === sortTypes.distance) {
       this.setState({ position: null });
       await this.getCurrentPosition();
@@ -143,18 +152,24 @@ class Stops extends PureComponent {
     let newStops = Object.keys(stopList);
     if (sortBy === sortTypes.distance && this.state.position) {
       newStops = newStops.sort((a, b) => {
-        const stopA = stopList[a];
-        const stopB = stopList[b];
-        return getDistanceFromLatLonInKm({ lat: stopA.stopLat, lon: stopA.stopLon }, {
-          lat: stopB.stopLat,
-          lon: stopB.stopLon,
-        });
+        const stopA = stopList[a][0];
+        const stopB = stopList[b][0];
+        return (
+          getDistanceFromLatLonInKm(
+            { lat: stopA.stopLat, lon: stopA.stopLon },
+            this.state.position
+          ) -
+          getDistanceFromLatLonInKm(
+            { lat: stopB.stopLat, lon: stopB.stopLon },
+            this.state.position
+          )
+        );
       });
     }
-    if (desc) {
+    else if (desc) {
       newStops = newStops.reverse();
     }
-    this.setState({ stops: newStops, search: '', sortBy: sortBy, sortDesc: desc, loading: false });
+    this.setState({ stops: newStops, sortBy: sortBy, sortDesc: desc, loading: false });
   };
 
   keyExtractor = (item) => item;
@@ -168,20 +183,32 @@ class Stops extends PureComponent {
   );
 
   render() {
-    const { isFavScreen, sortBy, sortDesc, loading } = this.state;
+    const { isFavScreen, sortDesc, loading } = this.state;
     const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
       <View style={styles.wrapper}>
         {!isFavScreen && <View style={styles.sortBar}>
-          {sortBy === sortTypes.name && sortDesc ?
-            <TouchableOpacity onPress={() => this.handleSort(sortTypes.name, false)} style={styles.sortIcon}>
+          {sortDesc ?
+            <TouchableOpacity
+              onPress={() => this.handleSort(sortTypes.name, false)}
+              style={styles.sortIcon}
+              disabled={loading}
+            >
               <FontAwesome5 name="sort-alpha-up" color={COLORS.main} size={fontSize} />
             </TouchableOpacity> :
-            <TouchableOpacity onPress={() => this.handleSort(sortTypes.name, true)} style={styles.sortIcon}>
+            <TouchableOpacity
+              onPress={() => this.handleSort(sortTypes.name, true)}
+              style={styles.sortIcon}
+              disabled={loading}
+            >
               <FontAwesome5 name="sort-alpha-down" color={COLORS.main} size={fontSize} />
             </TouchableOpacity>
           }
-          <TouchableOpacity onPress={() => this.handleSort(sortTypes.distance, false)} style={styles.sortIcon}>
+          <TouchableOpacity
+            onPress={() => this.handleSort(sortTypes.distance, true)}
+            style={styles.sortIcon}
+            disabled={loading}
+          >
             <FontAwesome5 name="location-arrow" color={COLORS.main} size={fontSize}/>
           </TouchableOpacity>
         </View>
@@ -193,6 +220,7 @@ class Stops extends PureComponent {
           value={this.state.search}
           placeholder={'Wyszukaj'}
           underlineColorAndroid={COLORS.main}
+          editable={!loading}
         />
         }
         {loading
