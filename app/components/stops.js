@@ -125,18 +125,18 @@ class Stops extends PureComponent {
     return new Promise(resolve => {
       navigator.geolocation.getCurrentPosition(
         ({coords}) => {
-          console.log(coords);
           this.setState({
             position: { lat: coords.latitude, lon: coords.longitude },
           });
           resolve(true);
         },
-        () => {
+        (error) => {
+          console.log(error);
           resolve(false);
+          alert("Nie udało się uzyskać lokalizacji")
         },
         {
-          enableHighAccuracy: true,
-          timeout: 20000,
+          timeout: 30000,
           maximumAge: 10000,
         }
       );
@@ -147,7 +147,7 @@ class Stops extends PureComponent {
     this.setState({ loading: true, search: '' });
     if (sortBy === sortTypes.distance) {
       this.setState({ position: null });
-      await this.getCurrentPosition();
+      desc = await this.getCurrentPosition();
     }
     let newStops = Object.keys(stopList);
     if (sortBy === sortTypes.distance && this.state.position) {
