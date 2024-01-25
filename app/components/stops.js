@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   sortBar: {
     flexDirection: 'row',
     padding: 5,
+    marginLeft: 10,
   },
   sortIcon: {
     marginRight: 10,
@@ -88,6 +89,7 @@ class Stops extends PureComponent {
       stops: Object.keys(stopList),
       isFavScreen: false,
       sortBy: sortTypes.name,
+      sortDesc: false,
     };
     this.favourites = {};
   }
@@ -112,12 +114,7 @@ class Stops extends PureComponent {
     this.setState({stops: newStops, search: text});
   };
 
-  handleSort = (sortBy) => {
-    let desc = false;
-    if (sortBy === sortTypes.name && sortBy === this.state.sortBy) {
-      this.setState({ sort: `-${sortTypes}` });
-      desc = true;
-    }
+  handleSort = (sortBy, desc) => {
     let newStops = Object.keys(stopList);
     if (sortBy === sortTypes.distance) {
       newStops = newStops.sort((a, b) => {
@@ -132,7 +129,7 @@ class Stops extends PureComponent {
     if (desc) {
       newStops = newStops.reverse();
     }
-    this.setState({ stops: newStops, search: '' });
+    this.setState({ stops: newStops, search: '', sortBy: sortBy, sortDesc: desc });
   };
 
   keyExtractor = (item) => item;
@@ -146,14 +143,19 @@ class Stops extends PureComponent {
   );
 
   render() {
-    const {isFavScreen} = this.state;
+    const { isFavScreen, sortBy, sortDesc } = this.state;
     const ifFavEmpty = isFavScreen && Object.keys(this.props.favourites).length === 0;
     return (
       <View style={styles.wrapper}>
         {!isFavScreen && <View style={styles.sortBar}>
-          <TouchableOpacity onPress={() => this.handleSort(sortTypes.name)} style={styles.sortIcon}>
-            <FontAwesome5 name="sort-alpha-up" color={COLORS.main} size={fontSize}/>
-          </TouchableOpacity>
+          {sortBy === sortTypes.name && sortDesc ?
+            <TouchableOpacity onPress={() => this.handleSort(sortTypes.name, false)} style={styles.sortIcon}>
+              <FontAwesome5 name="sort-alpha-up" color={COLORS.main} size={fontSize} />
+            </TouchableOpacity> :
+            <TouchableOpacity onPress={() => this.handleSort(sortTypes.name, true)} style={styles.sortIcon}>
+              <FontAwesome5 name="sort-alpha-down" color={COLORS.main} size={fontSize} />
+            </TouchableOpacity>
+          }
           <TouchableOpacity onPress={() => this.handleSort(sortTypes.distance)} style={styles.sortIcon}>
             <FontAwesome5 name="location-arrow" color={COLORS.main} size={fontSize}/>
           </TouchableOpacity>
