@@ -24,8 +24,8 @@ android {
         applicationId "dev.akane.tripstop"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.1.2"
+        versionCode 18
+        versionName "1.1.3"
         multiDexEnabled true
     }
     signingConfigs {

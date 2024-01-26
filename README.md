@@ -43,6 +43,3 @@ Map of stops (long press on the stop name) or stops with a route (press on the d
 $ yarn
 ```
 2. Start with `react-native run-android`
-
-## TODO:
-- sort stops by distance from the user (GPS)
