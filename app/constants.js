@@ -9,7 +9,7 @@ export const ACTIONS = {
   LOAD_FOLLOWED: 'load_followed',
 };
 
-export const API_URL = 'https://ckan2.multimediagdansk.pl/delays?stopId=';
+export const API_URL = 'https://ckan2.multimediagdansk.pl/departures?stopId=';
 
 export const COLORS = {
   main: '#1A237E',

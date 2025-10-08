@@ -39,7 +39,7 @@ export function fetchArrivalTimes(stopId, stopName) {
       const responseJson = await response.json();
       dispatch({
         type: ACTIONS.FETCH_ARRIVAL_TIMES,
-        payload: {data: responseJson.delay},
+        payload: { data: responseJson.departures },
       });
     } catch (error) {
       dispatch({type: ACTIONS.FAILED_FETCH_ARRIVAL_TIMES});

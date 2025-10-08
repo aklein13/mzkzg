@@ -15,6 +15,7 @@ import {Actions} from 'react-native-router-flux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fetchArrivalTimes, clearArrivalTimes, manageFavourite, setCurrentStop, changeFollowed} from '../actions/stop';
 import {COLORS} from '../constants';
+import moment from 'moment';
 
 const {height, width} = Dimensions.get('window');
 const refreshTimeout = 1000 * 30;
@@ -148,6 +149,8 @@ class Stop extends PureComponent {
     let routeName = routeList[item.routeId];
     routeName = routeName ? routeName.name : '';
     const textStyle = this.props.followed[routeName] ? {fontWeight: 'bold'} : {};
+    const estimatedDate = moment(item.estimatedTime);
+    const estimatedTime = estimatedDate.format("HH:mm");
     return (
       <TouchableOpacity onPress={() => this.handlePress(routeName, item)}>
         <View style={styles.arrival}>
@@ -158,7 +161,7 @@ class Stop extends PureComponent {
             {item.headsign}
           </Text>
           <Text style={[styles.arrivalText, textStyle]}>
-            {item.estimatedTime}
+            {estimatedTime}
           </Text>
         </View>
       </TouchableOpacity>
