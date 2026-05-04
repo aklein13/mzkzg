@@ -6,7 +6,9 @@ with gzip.GzipFile('./downloaded/stopsintrips.json.gz', 'r') as fin:
     data = json.loads(fin.read().decode('utf-8'))
     trips = {}
     # Output in format: {"route_id": ["stop_id", "stop_id"]}
-    for date_key in data.keys():
+    date_keys = list(data.keys())
+    print(f"Dates: {date_keys}")
+    for date_key in date_keys:
         current_data = data[date_key]['stopsInTrip']
         for trip in current_data:
             new_route = {}

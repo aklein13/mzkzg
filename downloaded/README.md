@@ -1,7 +1,7 @@
 # Instruction
 
-1. Download routes, stops stopsintrips from link in their .py files
-2. Merge 1 day from new: routes, stopsintrips
+1. Download routes, stops, stopsintrips from link in their .py files
+2. Merge 1 day from new: routes, stopsintrips. Sublime kinda works.
 3. Replace stops
 4. Run `jq -c . < routes.json >> out.json` on every file to minify it
 5. Run compress_downloaded.py
